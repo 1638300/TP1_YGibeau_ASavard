@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4524106262017022}
-  - component: {fileID: 114106422454391734}
+  - component: {fileID: 114694472734585906}
   m_Layer: 0
   m_Name: Control
   m_TagString: Untagged
@@ -69,7 +69,7 @@ Transform:
   m_Father: {fileID: 4040930786401092}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114106422454391734
+--- !u!114 &114694472734585906
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,9 +77,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1128268135775064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c94bdc5e30d40d0b8ac80c5d43ecaea, type: 3}
+  m_Script: {fileID: 11500000, guid: ddb0fe254984ff04ebd5aa0bb0a80797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1399810628277264, guid: 5b3563603dcbbce449eb771ff30aba92,
     type: 2}
-  fireDelayInSeconds: 0.1
+  fireDelayInSeconds: 1
+  lastTimeShotInSeconds: 1.93
+  damage: 10

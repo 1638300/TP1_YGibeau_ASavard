@@ -12,7 +12,7 @@ namespace Playmode.Bullet
         private Mover mover;
         private Destroyer destroyer;
         private float timeSinceSpawnedInSeconds;
-
+        private int damage = 1;
         private bool IsAlive => timeSinceSpawnedInSeconds < lifeSpanInSeconds;
 
         private void Awake()
@@ -53,6 +53,10 @@ namespace Playmode.Bullet
                 mover.Move(Mover.Foward);
             else
                 destroyer.Destroy();
+        }
+        public void SetDamage(int damage)
+        {
+             this.damage = damage;
         }
     }
 }

@@ -4,6 +4,8 @@ using Playmode.Entity.Senses;
 using UnityEngine;
 using Playmode.Ennemy;
 using Playmode.Entity.Destruction;
+using Playmode.Ennemy.BodyParts;
+using Playmode.Weapon;
 
 namespace Playmode.Pickables
 {
@@ -28,7 +30,7 @@ namespace Playmode.Pickables
         private void OnEnable()
         {
             ennemySensor.OnEnnemySensed += OnEnnemySensed;
-        }
+         }
 
         private void OnDisable()
         {
@@ -80,8 +82,12 @@ namespace Playmode.Pickables
                     destroyer.Destroy();
                     break;
                 case PickableTypes.Shotgun:
+                     ennemy.transform.root.GetComponentInChildren<HandController>().Hold(WeaponType.Shotgun);
+                     destroyer.Destroy();
                     break;
                 case PickableTypes.Uzi:
+                    ennemy.transform.root.GetComponentInChildren<HandController>().Hold(WeaponType.Uzi);
+                    destroyer.Destroy();
                     break;
             }
         }
