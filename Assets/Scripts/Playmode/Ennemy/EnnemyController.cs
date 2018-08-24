@@ -71,8 +71,6 @@ namespace Playmode.Ennemy
             ennemySensor = rootTransform.GetComponentInChildren<EnnemySensor>();
             hitSensor = rootTransform.GetComponentInChildren<HitSensor>();
             handController = hand.GetComponent<HandController>();
-
-            strategy = new TurnAndShootStragegy(mover, handController);
         }
 
         private void CreateStartingWeapon()
@@ -114,15 +112,19 @@ namespace Playmode.Ennemy
             {
                 case EnnemyStrategy.Careful:
                     typeSign.GetComponent<SpriteRenderer>().sprite = carefulSprite;
+                    this.strategy = new TurnAndShootStragegy(mover, handController);
                     break;
                 case EnnemyStrategy.Cowboy:
                     typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
+                    this.strategy = new TurnAndShootStragegy(mover, handController);
                     break;
                 case EnnemyStrategy.Camper:
                     typeSign.GetComponent<SpriteRenderer>().sprite = camperSprite;
+                    this.strategy = new TurnAndShootStragegy(mover, handController);
                     break;
                 default:
                     typeSign.GetComponent<SpriteRenderer>().sprite = normalSprite;
+                    this.strategy = new Normal(mover, handController);
                     break;
             }
         }
