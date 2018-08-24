@@ -58,20 +58,32 @@ namespace Playmode.Pickables
             {
                 case PickableTypes.Medkit:
                     transform.root.GetComponent<SpriteRenderer>().sprite = medkitSprite;
+                    this.type = PickableTypes.Medkit;
                     break;
                 case PickableTypes.Shotgun:
                     transform.root.GetComponent<SpriteRenderer>().sprite = shotgunSprite;
+                    this.type = PickableTypes.Shotgun;
                     break;
                 case PickableTypes.Uzi:
                     transform.root.GetComponent<SpriteRenderer>().sprite = uziSprite;
+                    this.type = PickableTypes.Uzi;
                     break;
             }
         }
 
         public void OnEnnemySensed(EnnemyController ennemy)
         {
-            ennemy.Heal(hitpoints);
-            destroyer.Destroy();
+            switch (type)
+            {
+                case PickableTypes.Medkit:
+                    ennemy.Heal(hitpoints);
+                    destroyer.Destroy();
+                    break;
+                case PickableTypes.Shotgun:
+                    break;
+                case PickableTypes.Uzi:
+                    break;
+            }
         }
     }
 }
