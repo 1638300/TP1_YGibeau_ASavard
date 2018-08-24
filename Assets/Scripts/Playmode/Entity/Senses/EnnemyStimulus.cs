@@ -1,4 +1,5 @@
 ﻿using Playmode.Ennemy;
+using Playmode.Util.Values;
 using UnityEngine;
 
 namespace Playmode.Entity.Senses
@@ -19,12 +20,12 @@ namespace Playmode.Entity.Senses
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            other.GetComponent<EnnemySensor>()?.See(ennemy);
+            other.GetComponent<EnnemySensor>()?.Sense(ennemy);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            other.GetComponent<EnnemySensor>()?.LooseSightOf(ennemy);
+            other.GetComponent<EnnemySensor>()?.Unsense(ennemy);
         }
     }
 }

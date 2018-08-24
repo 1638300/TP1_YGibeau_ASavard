@@ -1,4 +1,5 @@
 ﻿using System;
+using Playmode.Pickables;
 using Playmode.Ennemy.BodyParts;
 using Playmode.Ennemy.Strategies;
 using Playmode.Entity.Destruction;
@@ -25,6 +26,7 @@ namespace Playmode.Ennemy
         private Mover mover;
         private Destroyer destroyer;
         private EnnemySensor ennemySensor;
+        private PickableSensor pickableSensor;
         private HitSensor hitSensor;
         private HandController handController;
 
@@ -84,8 +86,8 @@ namespace Playmode.Ennemy
 
         private void OnEnable()
         {
-            ennemySensor.OnEnnemySeen += OnEnnemySeen;
-            ennemySensor.OnEnnemySightLost += OnEnnemySightLost;
+            ennemySensor.OnEnnemySensed += OnEnnemySensed;
+            ennemySensor.OnEnnemyUnsensed += OnEnnemyUnsensed;
             hitSensor.OnHit += OnHit;
             health.OnDeath += OnDeath;
         }
@@ -97,8 +99,8 @@ namespace Playmode.Ennemy
 
         private void OnDisable()
         {
-            ennemySensor.OnEnnemySeen -= OnEnnemySeen;
-            ennemySensor.OnEnnemySightLost -= OnEnnemySightLost;
+            ennemySensor.OnEnnemySensed -= OnEnnemySensed;
+            ennemySensor.OnEnnemyUnsensed -= OnEnnemyUnsensed;
             hitSensor.OnHit -= OnHit;
             health.OnDeath -= OnDeath;
         }
@@ -125,6 +127,11 @@ namespace Playmode.Ennemy
             }
         }
 
+        public void Heal(int hitpoints)
+        {
+            health.Heal(hitpoints);
+        }
+
         private void OnHit(int hitPoints)
         {
             Debug.Log("OW, I'm hurt! I'm really much hurt!!!");
@@ -139,12 +146,12 @@ namespace Playmode.Ennemy
             destroyer.Destroy();
         }
 
-        private void OnEnnemySeen(EnnemyController ennemy)
+        private void OnEnnemySensed(EnnemyController ennemy)
         {
             Debug.Log("I've seen an ennemy!! Ya so dead noob!!!");
         }
 
-        private void OnEnnemySightLost(EnnemyController ennemy)
+        private void OnEnnemyUnsensed(EnnemyController ennemy)
         {
             Debug.Log("I've lost sight of an ennemy...Yikes!!!");
         }

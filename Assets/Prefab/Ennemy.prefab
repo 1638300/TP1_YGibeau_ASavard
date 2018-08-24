@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 212022067182938298}
   - component: {fileID: 60192341613569478}
   - component: {fileID: 114574195830500936}
+  - component: {fileID: 114736803667829082}
   m_Layer: 0
   m_Name: Sight
   m_TagString: Untagged
@@ -75,7 +76,7 @@ GameObject:
   - component: {fileID: 50703390751095472}
   m_Layer: 0
   m_Name: Ennemy
-  m_TagString: Untagged
+  m_TagString: Ennemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -355,6 +356,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d650ce41c0d4151a1d594c24c2bc7e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114736803667829082
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1699645007186046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a9e48c0d9848214995f49b67e45a993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114771647671017566
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -569,7 +581,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
