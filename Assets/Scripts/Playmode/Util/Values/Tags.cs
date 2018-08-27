@@ -5,5 +5,6 @@
         public const string MainController = "MainController";
         public const string Ennemy = "Ennemy";
         public const string Pickable = "Pickable";
+        public const string WorldArea = "WorldArea";
     }
 }

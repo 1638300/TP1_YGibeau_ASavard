@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Playmode.Ennemy;
+using System;
 using UnityEngine;
 
 namespace Playmode.Entity.Status
 {
-    public delegate void HealthEventHandler();
+    public delegate void HealthEventHandler(EnnemyController ennemy);
 
     public class Health : MonoBehaviour
     {
@@ -45,7 +46,7 @@ namespace Playmode.Entity.Status
 
         private void NotifyDeath()
         {
-            if (OnDeath != null) OnDeath();
+            if (OnDeath != null) OnDeath(GetComponentInParent<EnnemyController>());
         }
     }
 }

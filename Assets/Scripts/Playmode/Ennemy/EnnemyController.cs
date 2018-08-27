@@ -7,6 +7,7 @@ using Playmode.Entity.Senses;
 using Playmode.Entity.Status;
 using Playmode.Movement;
 using UnityEngine;
+using Playmode.Util.Values;
 
 namespace Playmode.Ennemy
 {
@@ -26,7 +27,7 @@ namespace Playmode.Ennemy
         private Mover mover;
         private Destroyer destroyer;
         private EnnemySensor ennemySensor;
-        private PickableSensor pickableSensor;
+        private WorldSensor worldSensor;
         private HitSensor hitSensor;
         private HandController handController;
 
@@ -69,6 +70,7 @@ namespace Playmode.Ennemy
 
             var rootTransform = transform.root;
             ennemySensor = rootTransform.GetComponentInChildren<EnnemySensor>();
+            worldSensor = rootTransform.GetComponentInChildren<WorldSensor>();
             hitSensor = rootTransform.GetComponentInChildren<HitSensor>();
             handController = hand.GetComponent<HandController>();
         }
@@ -84,8 +86,6 @@ namespace Playmode.Ennemy
 
         private void OnEnable()
         {
-            ennemySensor.OnEnnemySensed += OnEnnemySensed;
-            ennemySensor.OnEnnemyUnsensed += OnEnnemyUnsensed;
             hitSensor.OnHit += OnHit;
             health.OnDeath += OnDeath;
         }
@@ -97,8 +97,6 @@ namespace Playmode.Ennemy
 
         private void OnDisable()
         {
-            ennemySensor.OnEnnemySensed -= OnEnnemySensed;
-            ennemySensor.OnEnnemyUnsensed -= OnEnnemyUnsensed;
             hitSensor.OnHit -= OnHit;
             health.OnDeath -= OnDeath;
         }
@@ -112,19 +110,19 @@ namespace Playmode.Ennemy
             {
                 case EnnemyStrategy.Careful:
                     typeSign.GetComponent<SpriteRenderer>().sprite = carefulSprite;
-                    this.strategy = new TurnAndShootStragegy(mover, handController);
+                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
                     break;
                 case EnnemyStrategy.Cowboy:
                     typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
-                    this.strategy = new TurnAndShootStragegy(mover, handController);
+                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
                     break;
                 case EnnemyStrategy.Camper:
                     typeSign.GetComponent<SpriteRenderer>().sprite = camperSprite;
-                    this.strategy = new TurnAndShootStragegy(mover, handController);
+                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
                     break;
                 default:
                     typeSign.GetComponent<SpriteRenderer>().sprite = normalSprite;
-                    this.strategy = new Normal(mover, handController);
+                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
                     break;
             }
         }
@@ -136,26 +134,16 @@ namespace Playmode.Ennemy
 
         private void OnHit(int hitPoints)
         {
-            Debug.Log("OW, I'm hurt! I'm really much hurt!!!");
+            //Debug.Log("OW, I'm hurt! I'm really much hurt!!!");
 
             health.Hit(hitPoints);
         }
 
-        private void OnDeath()
+        private void OnDeath(EnnemyController ennemy)
         {
             Debug.Log("Yaaaaarggg....!! I died....GG.");
 
             destroyer.Destroy();
-        }
-
-        private void OnEnnemySensed(EnnemyController ennemy)
-        {
-            Debug.Log("I've seen an ennemy!! Ya so dead noob!!!");
-        }
-
-        private void OnEnnemyUnsensed(EnnemyController ennemy)
-        {
-            Debug.Log("I've lost sight of an ennemy...Yikes!!!");
         }
     }
 }

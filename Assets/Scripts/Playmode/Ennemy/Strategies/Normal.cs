@@ -1,24 +1,49 @@
 ﻿using Playmode.Ennemy.BodyParts;
+using Playmode.Entity.Senses;
 using Playmode.Movement;
+using UnityEngine;
 
 namespace Playmode.Ennemy.Strategies
 {
-    public class Normal : IEnnemyStrategy
+    public class Normal : BaseStrategy
     {
-        private readonly Mover mover;
-        private readonly HandController handController;
+        private const int closestDistanceAllowed = 3;
 
-        public Normal(Mover mover, HandController handController)
+        public Normal(Mover mover, HandController handController, WorldSensor worldSensor, EnnemySensor ennemySensor)
+            : base(mover, handController, worldSensor, ennemySensor)
         {
-            this.mover = mover;
-            this.handController = handController;
+            
         }
 
-        public void Act()
+        public override void Act()
         {
-            mover.Move(Mover.Foward);
+            if (isEnnemySeen)
+            {
+                Vector3 position = ennemySensor.firstEnnemy.transform.position;
+                mover.RotateTowards(position);
+                if(Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
+                {
+                    mover.Move(Mover.Foward);
+                }
+                handController.Use();
+            }
+            else
+            {
+                base.Act();
+            }
+        }
 
-            handController.Use();
+        protected override void OnEnnemySensed(EnnemyController ennemy)
+        {
+            isEnnemySeen = true;
+        }
+
+        protected override void OnEnnemyUnsensed(EnnemyController ennemy)
+        {
+            if(ennemySensor.firstEnnemy == null)
+            {
+                isEnnemySeen = false;
+            }
         }
     }
 }

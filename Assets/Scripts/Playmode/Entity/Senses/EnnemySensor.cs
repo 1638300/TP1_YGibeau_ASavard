@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Playmode.Ennemy;
+using Playmode.Entity.Status;
 using UnityEngine;
 
 namespace Playmode.Entity.Senses
@@ -13,7 +14,15 @@ namespace Playmode.Entity.Senses
         public event EnnemySensorEventHandler OnEnnemySensed;
         public event EnnemySensorEventHandler OnEnnemyUnsensed;
 
-        public IEnumerable<EnnemyController> EnnemiesInSight => ennemiesInSight;
+        public EnnemyController firstEnnemy
+        {
+            get
+            {
+                var ennemy = ennemiesInSight.GetEnumerator();
+                ennemy.MoveNext();
+                return ennemy.Current;
+            }
+        }
 
         private void Awake()
         {
@@ -29,12 +38,16 @@ namespace Playmode.Entity.Senses
         {
             ennemiesInSight.Add(ennemy);
 
+            ennemy.GetComponent<Health>().OnDeath += OnDeath;
+
             NotifyEnnemySensed(ennemy);
         }
 
         public void Unsense(EnnemyController ennemy)
         {
             ennemiesInSight.Remove(ennemy);
+
+            ennemy.GetComponent<Health>().OnDeath -= OnDeath;
 
             NotifyEnnemySightUnsensed(ennemy);
         }
@@ -47,6 +60,13 @@ namespace Playmode.Entity.Senses
         private void NotifyEnnemySightUnsensed(EnnemyController ennemy)
         {
             if (OnEnnemyUnsensed != null) OnEnnemyUnsensed(ennemy);
+        }
+
+        private void OnDeath(EnnemyController ennemy)
+        {
+            Debug.Log("delet");
+            ennemiesInSight.Remove(ennemy);
+            this?.OnEnnemyUnsensed(ennemy);
         }
     }
 }

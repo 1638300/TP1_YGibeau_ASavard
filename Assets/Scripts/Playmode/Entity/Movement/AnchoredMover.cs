@@ -31,5 +31,13 @@ namespace Playmode.Movement
                 (direction < 0 ? rotateSpeed : -rotateSpeed) * Time.deltaTime
             );
         }
+
+        public override void RotateTowards(Vector3 position)
+        {
+            var directionToTarget = rootTransform.position - position;
+            var angle = Vector3.Angle(rootTransform.up, directionToTarget);
+            var direction = Vector3.Dot(directionToTarget, rootTransform.right);
+            transform.RotateAround(rootTransform.position, Vector3.forward, direction < 0 ? -1 : 1 * Mathf.Min(angle, Time.deltaTime));
+        }
     }
 }

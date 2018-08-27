@@ -23,10 +23,5 @@ namespace Playmode.Entity.Senses
         {
             other.GetComponent<PickableSensor>()?.Sense(pickable);
         }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            other.GetComponent<PickableSensor>()?.Unsense(pickable);
-        }
     }
 }
