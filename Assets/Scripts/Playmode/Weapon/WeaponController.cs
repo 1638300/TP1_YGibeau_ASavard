@@ -21,10 +21,13 @@ namespace Playmode.Weapon
         [SerializeField] private int shotgunBulletSpreading = 40;
         
         private float lastTimeShotInSeconds;
+        private float fireDelayBonus = 0;
 
         private bool CanShoot => Time.time - lastTimeShotInSeconds > fireDelayInSeconds;
 
         [SerializeField] private int damage = 10;
+
+        private int bonusDamage = 0;
 
         private WeaponType weaponType = WeaponType.Default;
 
@@ -82,11 +85,16 @@ namespace Playmode.Weapon
           }
           else if (weaponType == WeaponType.Shotgun)
           {
-             damage += shotgunBonusDamage;
+             bonusDamage += shotgunBonusDamage;
+             damage = shotgunDefaultDamage + bonusDamage;
+             fireDelayInSeconds = shotgunDefaultFireRate - fireDelayBonus;
           }
           else
           {
-             fireDelayInSeconds -= uziBonusFireRate;
+             fireDelayBonus += uziBonusFireRate;
+             damage = uziDefaultDamage + bonusDamage;
+             fireDelayInSeconds = uziDefaultFireRate - fireDelayBonus;
+
           }
           weaponType = type;  
         }

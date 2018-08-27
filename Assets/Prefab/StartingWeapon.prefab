@@ -82,6 +82,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1399810628277264, guid: 5b3563603dcbbce449eb771ff30aba92,
     type: 2}
-  fireDelayInSeconds: 1
-  lastTimeShotInSeconds: 1.93
+  fireDelayInSeconds: 0.5
+  uziDefaultDamage: 8
+  uziDefaultFireRate: 0.2
+  uziBonusFireRate: 0.02
+  shotgunDefaultDamage: 14
+  shotgunBonusDamage: 1
+  shotgunDefaultFireRate: 1
+  shotgunNbBullets: 5
+  shotgunBulletSpacing: 20
+  shotgunBulletSpreading: 40
   damage: 10
