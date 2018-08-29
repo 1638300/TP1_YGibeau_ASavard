@@ -27,6 +27,7 @@ namespace Playmode.Ennemy
         private Mover mover;
         private Destroyer destroyer;
         private EnnemySensor ennemySensor;
+        private PickableSensor pickableSensor;
         private WorldSensor worldSensor;
         private HitSensor hitSensor;
         private HandController handController;
@@ -70,6 +71,7 @@ namespace Playmode.Ennemy
 
             var rootTransform = transform.root;
             ennemySensor = rootTransform.GetComponentInChildren<EnnemySensor>();
+            pickableSensor = rootTransform.GetComponentInChildren<PickableSensor>();
             worldSensor = rootTransform.GetComponentInChildren<WorldSensor>();
             hitSensor = rootTransform.GetComponentInChildren<HitSensor>();
             handController = hand.GetComponent<HandController>();
@@ -110,19 +112,19 @@ namespace Playmode.Ennemy
             {
                 case EnnemyStrategy.Careful:
                     typeSign.GetComponent<SpriteRenderer>().sprite = carefulSprite;
-                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
+                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
                     break;
                 case EnnemyStrategy.Cowboy:
                     typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
-                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
+                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
                     break;
                 case EnnemyStrategy.Camper:
                     typeSign.GetComponent<SpriteRenderer>().sprite = camperSprite;
-                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
+                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
                     break;
                 default:
                     typeSign.GetComponent<SpriteRenderer>().sprite = normalSprite;
-                    this.strategy = new Normal(mover, handController, worldSensor, ennemySensor);
+                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
                     break;
             }
         }
