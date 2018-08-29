@@ -27,7 +27,7 @@ namespace Playmode.Ennemy.Strategies
                 break;
 
               case State.Shooting:
-                Vector3 position = ennemySensor.firstEnnemy.transform.position;
+                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
                 mover.RotateTowards(position);
                 if(Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
                 {
@@ -49,23 +49,22 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if(ennemySensor.firstEnnemy == null)
+            if(ennemySensor.GetFirstEnnemy == null)
             {
                 isEnnemySeen = false;
             }
         }
-        protected void OnPickableSensed(PickableController pickable)
+
+        protected override void OnPickableSensed(PickableController pickable)
         {
-          if (pickable.IsWeapon() && )
-          {
-            
-          }
+            throw new System.NotImplementedException();
         }
 
-        protected void OnPickableUnsensed(PickableController pickable)
+        protected override void OnPickableUnsensed(PickableController pickable)
         {
-          nani.xd;
+            throw new System.NotImplementedException();
         }
+
         private enum State
         {
           Seeking,

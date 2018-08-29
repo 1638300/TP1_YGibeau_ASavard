@@ -10,7 +10,6 @@ namespace Playmode.Ennemy.Strategies
     {
         protected readonly Mover mover;
         protected readonly HandController handController;
-        protected bool isEnnemySeen;
         protected EnnemySensor ennemySensor;
         protected PickableSensor pickableSensor;
 

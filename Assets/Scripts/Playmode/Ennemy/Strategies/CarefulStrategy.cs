@@ -29,12 +29,17 @@ public class CarefulStrategy : BaseStrategy
             case State.Seeking:
                 base.Act();
                 break;
-            case State.SeekingMedicalKit:
+            case State.PickingMedkit:
+                Vector3 medkitPosition = pickableSensor.GetFirstMedkit().transform.position;
+                MoveTowardsMedkit(medkitPosition);
                 break;
             case State.Shooting:
-                RunAndGun();
+                Vector3 ennemyPosition = ennemySensor.GetFirstEnnemy.transform.position;
+                MoveAndShootTowardsEnnemy(ennemyPosition);
                 break;
             case State.PickingWeapon:
+                Vector3 weaponPosition = pickableSensor.GetFirstWeapon().transform.position;
+                MoveTowardsWeapon(weaponPosition);
                 break;
         }
     }
@@ -54,17 +59,30 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnPickableSensed(PickableController pickable)
     {
-        throw new System.NotImplementedException();
+        if (state != State.PickingMedkit && pickable.IsMedkit())
+        {
+            state = State.PickingMedkit;
+        }
     }
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        throw new System.NotImplementedException();
+        if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon() == null)
+        {
+            if (base.ennemySensor.GetFirstEnnemy == null)
+            {
+                state = State.Seeking;
+            }
+            else
+            {
+                state = State.Shooting;
+            }
+
+        }
     }
 
-    private void RunAndGun()
+    private void MoveAndShootTowardsEnnemy(Vector3 position)
     {
-        Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
         mover.RotateTowards(position);
 
         if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
@@ -75,10 +93,24 @@ public class CarefulStrategy : BaseStrategy
         handController.Use();
     }
 
+    private void MoveTowardsMedkit(Vector3 position)
+    {
+        mover.RotateTowards(position);
+
+        mover.Move(Mover.Foward);
+    }
+
+    private void MoveTowardsWeapon(Vector3 position)
+    {
+        mover.RotateTowards(position);
+
+        mover.Move(Mover.Foward);
+    }
+
     private enum State
     {
         Seeking,
-        SeekingMedicalKit,
+        PickingMedkit,
         Shooting,
         PickingWeapon
     }
