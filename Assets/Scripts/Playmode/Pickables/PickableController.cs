@@ -9,6 +9,8 @@ using Playmode.Weapon;
 
 namespace Playmode.Pickables
 {
+    public delegate void PickableControllerEventHandler(PickableController pickableController);
+    
     public class PickableController : MonoBehaviour
     {
 
@@ -20,6 +22,12 @@ namespace Playmode.Pickables
         private EnnemySensor ennemySensor;
         private Destroyer destroyer;
         private PickableTypes type;
+        public event PickableControllerEventHandler onDestroy;
+
+        private void NotifyPickableDestroyed()
+        {
+            if (onDestroy != null) onDestroy(this);
+        }
 
         private void Awake()
         {
@@ -79,14 +87,17 @@ namespace Playmode.Pickables
             {
                 case PickableTypes.Medkit:
                     ennemy.Heal(hitpoints);
+                    NotifyPickableDestroyed();
                     destroyer.Destroy();
                     break;
                 case PickableTypes.Shotgun:
                      ennemy.transform.root.GetComponentInChildren<HandController>().Hold(WeaponType.Shotgun);
+                     NotifyPickableDestroyed();
                      destroyer.Destroy();
                     break;
                 case PickableTypes.Uzi:
                     ennemy.transform.root.GetComponentInChildren<HandController>().Hold(WeaponType.Uzi);
+                    NotifyPickableDestroyed();
                     destroyer.Destroy();
                     break;
             }

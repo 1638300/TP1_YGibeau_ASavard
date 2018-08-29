@@ -23,5 +23,7 @@ namespace Playmode.Entity.Senses
         {
             other.GetComponent<PickableSensor>()?.Sense(pickable);
         }
+
+        
     }
 }

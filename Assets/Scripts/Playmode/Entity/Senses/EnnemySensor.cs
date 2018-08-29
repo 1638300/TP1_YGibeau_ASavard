@@ -36,13 +36,13 @@ namespace Playmode.Entity.Senses
 
         public void Sense(EnnemyController ennemy)
         {
-            if(ennemiesInSight.Contains(ennemy))
+            if(!ennemiesInSight.Contains(ennemy))
             {
-             ennemiesInSight.Add(ennemy);
+              ennemiesInSight.Add(ennemy);
 
-            ennemy.GetComponent<Health>().OnDeath += OnDeath;
+              ennemy.GetComponent<Health>().OnDeath += OnDeath;
 
-            NotifyEnnemySensed(ennemy);
+              NotifyEnnemySensed(ennemy);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Playmode.Entity.Senses
         {
             Debug.Log("delet");
             ennemiesInSight.Remove(ennemy);
-            this?.OnEnnemyUnsensed(ennemy);
+            this.OnEnnemyUnsensed(ennemy);
         }
     }
 }

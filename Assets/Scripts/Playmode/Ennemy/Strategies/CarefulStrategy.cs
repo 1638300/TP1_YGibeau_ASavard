@@ -54,12 +54,12 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnPickableSensed(PickableController pickable)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     private void RunAndGun()
