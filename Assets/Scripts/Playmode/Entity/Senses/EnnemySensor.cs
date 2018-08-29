@@ -14,7 +14,7 @@ namespace Playmode.Entity.Senses
         public event EnnemySensorEventHandler OnEnnemySensed;
         public event EnnemySensorEventHandler OnEnnemyUnsensed;
 
-        public EnnemyController firstEnnemy
+        public EnnemyController GetFirstEnnemy
         {
             get
             {
