@@ -25,7 +25,7 @@ namespace Playmode.Ennemy.Strategies
         {
             if (isEnnemySeen)
             {
-                Vector3 position = ennemySensor.firstEnnemy.transform.position;
+                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
                 mover.RotateTowards(position);
                 if(Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
                 {
@@ -46,20 +46,14 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if(ennemySensor.firstEnnemy == null)
+            if(ennemySensor.GetFirstEnnemy == null)
             {
                 isEnnemySeen = false;
             }
         }
 
-        protected override void OnPickableSensed(PickableController pickable)
-        {
-            throw new System.NotImplementedException();
-        }
+        protected override void OnPickableSensed(PickableController pickable){ }
 
-        protected override void OnPickableUnsensed(PickableController pickable)
-        {
-            throw new System.NotImplementedException();
-        }
+        protected override void OnPickableUnsensed(PickableController pickable){ }
     }
 }

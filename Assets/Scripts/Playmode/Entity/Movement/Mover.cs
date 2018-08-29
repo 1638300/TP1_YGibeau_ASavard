@@ -6,6 +6,7 @@ namespace Playmode.Movement
     public abstract class Mover : MonoBehaviour
     {
         public static readonly Vector3 Foward = Vector3.up;
+        public static readonly Vector3 Backward = Vector3.down;
         public const float Clockwise = 1f;
         
         [SerializeField] protected float speed = 1f;
