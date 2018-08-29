@@ -31,16 +31,19 @@ namespace Playmode.Entity.Senses
 
         private void InitializeComponent()
         {
-            ennemiesInSight = new HashSet<EnnemyController>();
+            ennemiesInSight = new LinkedList<EnnemyController>();
         }
 
         public void Sense(EnnemyController ennemy)
         {
-            ennemiesInSight.Add(ennemy);
+            if(ennemiesInSight.Contains(ennemy))
+            {
+             ennemiesInSight.Add(ennemy);
 
             ennemy.GetComponent<Health>().OnDeath += OnDeath;
 
             NotifyEnnemySensed(ennemy);
+            }
         }
 
         public void Unsense(EnnemyController ennemy)

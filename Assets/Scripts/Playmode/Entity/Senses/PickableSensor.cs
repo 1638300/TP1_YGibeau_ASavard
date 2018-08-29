@@ -15,6 +15,30 @@ namespace Playmode.Entity.Senses
 
         public IEnumerable<PickableController> PickablesInSight => pickablesInSight;
 
+        public PickableController GetFirstMedkit()
+        {
+          foreach (PickableController pickableController in pickablesInSight)
+          {
+            if (pickableController.IsMedkit())
+            {
+              return pickableController;
+            }
+          }
+          return null;
+        }
+
+        public PickableController GetFirstWeapon()
+        {
+          foreach (PickableController pickableController in pickablesInSight)
+          {
+            if (pickableController.IsWeapon())
+            {
+              return pickableController;
+            }
+          }
+          return null;
+        }
+
         private void Awake()
         {
             InitializeComponent();
@@ -29,22 +53,22 @@ namespace Playmode.Entity.Senses
         {
             pickablesInSight.Add(pickable);
 
-            NotifyEnnemySensed(pickable);
+            NotifyPickableSensed(pickable);
         }
 
         public void Unsense(PickableController pickable)
         {
             pickablesInSight.Remove(pickable);
 
-            NotifyEnnemySightUnsensed(pickable);
+            NotifyPickableUnsensed(pickable);
         }
 
-        private void NotifyEnnemySensed(PickableController pickable)
+        private void NotifyPickableSensed(PickableController pickable)
         {
             if (OnPickableSensed != null) OnPickableSensed(pickable);
         }
 
-        private void NotifyEnnemySightUnsensed(PickableController pickable)
+        private void NotifyPickableUnsensed(PickableController pickable)
         {
             if (OnPickableUnsensed != null) OnPickableUnsensed(pickable);
         }

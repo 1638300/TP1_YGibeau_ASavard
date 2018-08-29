@@ -91,5 +91,15 @@ namespace Playmode.Pickables
                     break;
             }
         }
+        
+        public bool IsMedkit()
+        {
+          return ((int)type & (int)PickableTypes.Util) == (int)PickableTypes.Util;
+        }
+
+        public bool IsWeapon()
+        {
+          return ((int)type & (int)PickableTypes.Weapon) == (int)PickableTypes.Weapon;
+        }
     }
 }
