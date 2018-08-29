@@ -27,42 +27,71 @@ namespace Playmode.Ennemy.Strategies
                 break;
 
               case State.Shooting:
-                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
-                mover.RotateTowards(position);
-                if(Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
-                {
-                    mover.Move(Mover.Foward);
-                }
-                handController.Use();
+                MoveAndShootTowardsEnnemy();
                 break;
 
               case State.PickingWeapon:
-                
+                MoveTowardsWeapon();
                 break;
             }
         }
 
         protected override void OnEnnemySensed(EnnemyController ennemy)
         {
-            isEnnemySeen = true;
+            if (state == State.Seeking)
+            {
+                state = State.Shooting;
+            }      
         }
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if(ennemySensor.GetFirstEnnemy == null)
+            if(state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
             {
-                isEnnemySeen = false;
+                state = State.Seeking;
             }
         }
 
         protected override void OnPickableSensed(PickableController pickable)
         {
-            throw new System.NotImplementedException();
+          if (state != State.PickingWeapon && pickable.IsWeapon())
+          {
+            state = State.PickingWeapon;
+            base.mover.ExtremeSpeedActivated();
+          }
         }
 
         protected override void OnPickableUnsensed(PickableController pickable)
         {
-            throw new System.NotImplementedException();
+          if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon() == null)
+          {
+            if (base.ennemySensor.GetFirstEnnemy == null)
+            {
+              state = State.Seeking;
+            }
+            else
+            {
+              state = State.Shooting;
+            }
+          }
+        }
+
+        private void MoveAndShootTowardsEnnemy()
+        {
+          Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
+          mover.RotateTowards(position);
+          if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
+          {
+            mover.Move(Mover.Foward);
+          }
+          handController.Use();
+        }
+
+        private void MoveTowardsWeapon()
+        {
+          Vector3 position = pickableSensor.GetFirstWeapon().transform.position;
+          mover.RotateTowards(position);
+          mover.Move(Mover.Foward);
         }
 
         private enum State

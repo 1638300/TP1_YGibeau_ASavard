@@ -69,7 +69,7 @@ namespace Playmode.Entity.Senses
         {
             Debug.Log("delet");
             ennemiesInSight.Remove(ennemy);
-            this?.OnEnnemyUnsensed(ennemy);
+            this.OnEnnemyUnsensed(ennemy);
         }
     }
 }

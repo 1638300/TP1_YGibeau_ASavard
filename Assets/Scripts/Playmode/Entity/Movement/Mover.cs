@@ -12,6 +12,12 @@ namespace Playmode.Movement
         [SerializeField] protected float speed = 1f;
         [SerializeField] protected float rotateSpeed = 90f;
 
+        public void ExtremeSpeedActivated()
+        {
+            speed *= 4;
+            rotateSpeed *= 2;
+        }
+
         protected void Awake()
         {
             ValidateSerialisedFields();

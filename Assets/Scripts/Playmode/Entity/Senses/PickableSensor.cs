@@ -49,9 +49,19 @@ namespace Playmode.Entity.Senses
             pickablesInSight = new HashSet<PickableController>();
         }
 
+        private void OnDisable()
+        {
+            foreach (PickableController pickableController in pickablesInSight)
+            {
+                pickableController.onDestroy -= Unsense;
+            }
+        }
+
         public void Sense(PickableController pickable)
         {
             pickablesInSight.Add(pickable);
+
+            pickable.onDestroy += Unsense;
 
             NotifyPickableSensed(pickable);
         }
