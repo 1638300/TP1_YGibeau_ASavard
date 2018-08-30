@@ -78,20 +78,27 @@ namespace Playmode.Ennemy.Strategies
 
         private void MoveAndShootTowardsEnnemy()
         {
-            Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
-            mover.RotateTowards(position);
-            if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
+            if (ennemySensor.GetFirstEnnemy != null)
             {
-                mover.Move(Mover.Foward);
+                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
+                mover.RotateTowards(position);
+                if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
+                {
+                    mover.Move(Mover.Foward);
+                }
+                handController.Use();
             }
-            handController.Use();
         }
 
+        //Todo : try/catch?
         private void MoveTowardsWeapon()
         {
-            Vector3 position = pickableSensor.GetFirstWeapon().transform.position;
-            mover.RotateTowards(position);
-            mover.Move(Mover.Foward);
+            if (pickableSensor.GetFirstWeapon() != null)
+            {
+                Vector3 position = pickableSensor.GetFirstWeapon().transform.position;
+                mover.RotateTowards(position);
+                mover.Move(Mover.Foward);
+            }
         }
 
         private enum State

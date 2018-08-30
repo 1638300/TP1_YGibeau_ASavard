@@ -37,7 +37,11 @@ namespace Playmode.Movement
             var directionToTarget = rootTransform.position - position;
             var angle = Vector3.Angle(rootTransform.up, directionToTarget);
             var direction = Vector3.Dot(directionToTarget, rootTransform.right);
-            transform.RotateAround(rootTransform.position, Vector3.forward, direction < 0 ? -1 : 1 * Mathf.Min(angle, Time.deltaTime));
+            if (angle <= Time.deltaTime* rotateSpeed)
+            {
+                transform.RotateAround(rootTransform.position, Vector3.forward, (direction < 0 ? -1 : 1) * (Time.deltaTime * rotateSpeed));
+            }
+           
         }
     }
 }
