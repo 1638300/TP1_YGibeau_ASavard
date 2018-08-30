@@ -17,11 +17,12 @@ public class CamperStrategy : BaseStrategy
     public CamperStrategy(
                             Mover mover, 
                             HandController handController, 
-                            WorldSensor worldSensor, 
+                            WorldSensor frontWorldSensor,
+                            WorldSensor backWorldSensor,
                             EnnemySensor ennemySensor,
                             PickableSensor pickableSensor,
                             EnnemyController ennemyController) 
-        : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
+        : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
     {
         this.ennemyController = ennemyController;
         ennemyController.OnLowLife += OnLowLife;
