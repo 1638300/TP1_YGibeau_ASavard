@@ -10,16 +10,28 @@ public class CarefulStrategy : BaseStrategy
 {
     private const int closestDistanceAllowed = 8;
     private State state = State.Seeking;
+    private bool isLowLife;
+
+    private EnnemyController ennemyController;
 
     public CarefulStrategy(
                             Mover mover, 
                             HandController handController, 
                             WorldSensor worldSensor, 
                             EnnemySensor ennemySensor,
-                            PickableSensor pickableSensor) 
+                            PickableSensor pickableSensor,
+                            EnnemyController ennemyController) 
         : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
     {
+        this.ennemyController = ennemyController;
+        ennemyController.OnLowLife += OnLowLife;
+        ennemyController.OnNormalLife += OnNormalLife;
+    }
 
+    ~CarefulStrategy()
+    {
+        ennemyController.OnLowLife -= OnLowLife;
+        ennemyController.OnNormalLife -= OnNormalLife;
     }
 
     public override void Act()
@@ -31,7 +43,7 @@ public class CarefulStrategy : BaseStrategy
                 break;
             case State.PickingMedkit:
                 Vector3 medkitPosition = pickableSensor.GetFirstMedkit().transform.position;
-                MoveTowardsMedkit(medkitPosition);
+                MoveTowardsPickable(medkitPosition);
                 break;
             case State.Shooting:
                 Vector3 ennemyPosition = ennemySensor.GetFirstEnnemy.transform.position;
@@ -39,19 +51,22 @@ public class CarefulStrategy : BaseStrategy
                 break;
             case State.PickingWeapon:
                 Vector3 weaponPosition = pickableSensor.GetFirstWeapon().transform.position;
-                MoveTowardsWeapon(weaponPosition);
+                MoveTowardsPickable(weaponPosition);
                 break;
         }
     }
 
     protected override void OnEnnemySensed(EnnemyController ennemy)
     {
-        state = State.Shooting;
+        if(state == State.Seeking && !isLowLife)
+        {
+            state = State.Shooting;
+        }
     }
 
     protected override void OnEnnemyUnsensed(EnnemyController ennemy)
     {
-        if (ennemySensor.GetFirstEnnemy == null)
+        if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
         {
             state = State.Seeking;
         }
@@ -59,9 +74,13 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnPickableSensed(PickableController pickable)
     {
-        if (state != State.PickingMedkit && pickable.IsMedkit())
+        if (state == State.Seeking && pickable.IsMedkit())
         {
             state = State.PickingMedkit;
+        }
+        if(pickable.IsWeapon() && state == State.Seeking && !isLowLife)
+        {
+            state = State.PickingWeapon;
         }
     }
 
@@ -81,6 +100,23 @@ public class CarefulStrategy : BaseStrategy
         }
     }
 
+    private void OnLowLife()
+    {
+        if(!isLowLife)
+        {
+            isLowLife = true;
+            base.mover.ExtremeSpeedActivated();
+        }
+
+        state = State.Seeking;
+    }
+
+    private void OnNormalLife()
+    {
+        isLowLife = false;
+        state = State.Seeking;
+    }
+
     private void MoveAndShootTowardsEnnemy(Vector3 position)
     {
         mover.RotateTowards(position);
@@ -93,14 +129,7 @@ public class CarefulStrategy : BaseStrategy
         handController.Use();
     }
 
-    private void MoveTowardsMedkit(Vector3 position)
-    {
-        mover.RotateTowards(position);
-
-        mover.Move(Mover.Foward);
-    }
-
-    private void MoveTowardsWeapon(Vector3 position)
+    private void MoveTowardsPickable(Vector3 position)
     {
         mover.RotateTowards(position);
 

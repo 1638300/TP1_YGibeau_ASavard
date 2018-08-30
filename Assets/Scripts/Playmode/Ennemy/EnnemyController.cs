@@ -11,6 +11,8 @@ using Playmode.Util.Values;
 
 namespace Playmode.Ennemy
 {
+    public delegate void LowLifeEventHandler();
+
     public class EnnemyController : MonoBehaviour
     {
         [Header("Body Parts")] [SerializeField] private GameObject body;
@@ -22,6 +24,10 @@ namespace Playmode.Ennemy
         [SerializeField] private Sprite cowboySprite;
         [SerializeField] private Sprite camperSprite;
         [Header("Behaviour")] [SerializeField] private GameObject startingWeaponPrefab;
+        [SerializeField] private int lowLifeThreshold;
+
+        public event LowLifeEventHandler OnLowLife;
+        public event LowLifeEventHandler OnNormalLife;
 
         private Health health;
         private Mover mover;
@@ -31,8 +37,20 @@ namespace Playmode.Ennemy
         private WorldSensor worldSensor;
         private HitSensor hitSensor;
         private HandController handController;
-
         private IEnnemyStrategy strategy;
+        private bool isLowLife;
+        
+        public bool IsLowLife
+        {
+            get
+            {
+                return isLowLife;
+            }
+            private set
+            {
+                isLowLife = value;
+            }
+        }
 
         private void Awake()
         {
@@ -112,7 +130,7 @@ namespace Playmode.Ennemy
             {
                 case EnnemyStrategy.Careful:
                     typeSign.GetComponent<SpriteRenderer>().sprite = carefulSprite;
-                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
+                    this.strategy = new CarefulStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor, this);
                     break;
                 case EnnemyStrategy.Cowboy:
                     typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
@@ -129,16 +147,34 @@ namespace Playmode.Ennemy
             }
         }
 
+        public void NotifyLowLife()
+        {
+            if (OnLowLife != null) OnLowLife();
+        }
+
+        public void NotifyNormalLife()
+        {
+            if (OnNormalLife != null) OnNormalLife();
+        }
+
         public void Heal(int hitpoints)
         {
             health.Heal(hitpoints);
+            if (health.HealthPoints > lowLifeThreshold)
+            {
+                IsLowLife = false;
+                NotifyNormalLife();
+            }
         }
 
         private void OnHit(int hitPoints)
         {
-            //Debug.Log("OW, I'm hurt! I'm really much hurt!!!");
-
             health.Hit(hitPoints);
+            if(health.HealthPoints < lowLifeThreshold)
+            {
+                IsLowLife = true;
+                NotifyLowLife();
+            }
         }
 
         private void OnDeath(EnnemyController ennemy)

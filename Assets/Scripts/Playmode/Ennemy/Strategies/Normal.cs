@@ -8,6 +8,7 @@ namespace Playmode.Ennemy.Strategies
 {
     public class NormalStrategy : BaseStrategy
     {
+        private bool isEnnemySeen;
         private const int closestDistanceAllowed = 3;
 
         public NormalStrategy(
