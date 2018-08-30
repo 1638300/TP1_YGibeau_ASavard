@@ -67,7 +67,6 @@ namespace Playmode.Entity.Senses
 
         private void OnDeath(EnnemyController ennemy)
         {
-            Debug.Log("delet");
             ennemiesInSight.Remove(ennemy);
             this.OnEnnemyUnsensed(ennemy);
         }
