@@ -17,11 +17,12 @@ public class CarefulStrategy : BaseStrategy
     public CarefulStrategy(
                             Mover mover, 
                             HandController handController, 
-                            WorldSensor worldSensor, 
+                            WorldSensor frontWorldSensor,
+                            WorldSensor backWorldSensor,
                             EnnemySensor ennemySensor,
                             PickableSensor pickableSensor,
                             EnnemyController ennemyController) 
-        : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
+        : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
     {
         this.ennemyController = ennemyController;
         ennemyController.OnLowLife += OnLowLife;
@@ -123,7 +124,7 @@ public class CarefulStrategy : BaseStrategy
 
         if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
             mover.Move(Mover.Foward);
-        else if (Vector3.Distance(position, mover.transform.position) < closestDistanceAllowed)
+        else if (Vector3.Distance(position, mover.transform.position) < closestDistanceAllowed && !isWorldColliding)
             mover.Move(Mover.Backward);
 
         handController.Use();

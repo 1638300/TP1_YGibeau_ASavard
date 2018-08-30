@@ -25,6 +25,8 @@ namespace Playmode.Ennemy
         [SerializeField] private Sprite camperSprite;
         [Header("Behaviour")] [SerializeField] private GameObject startingWeaponPrefab;
         [SerializeField] private int lowLifeThreshold;
+        [SerializeField] private WorldSensor frontWorldSensor;
+        [SerializeField] private WorldSensor backWorldSensor;
 
         public event LowLifeEventHandler OnLowLife;
         public event LowLifeEventHandler OnNormalLife;
@@ -34,7 +36,6 @@ namespace Playmode.Ennemy
         private Destroyer destroyer;
         private EnnemySensor ennemySensor;
         private PickableSensor pickableSensor;
-        private WorldSensor worldSensor;
         private HitSensor hitSensor;
         private HandController handController;
         private IEnnemyStrategy strategy;
@@ -90,7 +91,6 @@ namespace Playmode.Ennemy
             var rootTransform = transform.root;
             ennemySensor = rootTransform.GetComponentInChildren<EnnemySensor>();
             pickableSensor = rootTransform.GetComponentInChildren<PickableSensor>();
-            worldSensor = rootTransform.GetComponentInChildren<WorldSensor>();
             hitSensor = rootTransform.GetComponentInChildren<HitSensor>();
             handController = hand.GetComponent<HandController>();
         }
@@ -130,19 +130,44 @@ namespace Playmode.Ennemy
             {
                 case EnnemyStrategy.Careful:
                     typeSign.GetComponent<SpriteRenderer>().sprite = carefulSprite;
-                    this.strategy = new CarefulStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor, this);
+                    this.strategy = new CarefulStrategy(
+                                                        mover, 
+                                                        handController, 
+                                                        frontWorldSensor, 
+                                                        backWorldSensor, 
+                                                        ennemySensor, 
+                                                        pickableSensor, 
+                                                        this);
                     break;
                 case EnnemyStrategy.Cowboy:
                     typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
-                    this.strategy = new CowboyStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
+                    this.strategy = new CowboyStrategy(
+                                                        mover,
+                                                        handController,
+                                                        frontWorldSensor,
+                                                        backWorldSensor,
+                                                        ennemySensor,
+                                                        pickableSensor);
                     break;
                 case EnnemyStrategy.Camper:
                     typeSign.GetComponent<SpriteRenderer>().sprite = camperSprite;
-                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
+                    this.strategy = new NormalStrategy(
+                                                        mover,
+                                                        handController,
+                                                        frontWorldSensor,
+                                                        backWorldSensor,
+                                                        ennemySensor,
+                                                        pickableSensor);
                     break;
                 default:
                     typeSign.GetComponent<SpriteRenderer>().sprite = normalSprite;
-                    this.strategy = new NormalStrategy(mover, handController, worldSensor, ennemySensor, pickableSensor);
+                    this.strategy = new NormalStrategy(
+                                                        mover,
+                                                        handController,
+                                                        frontWorldSensor,
+                                                        backWorldSensor,
+                                                        ennemySensor,
+                                                        pickableSensor);
                     break;
             }
         }

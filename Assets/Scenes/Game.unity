@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdf5b0c5c591cc4fb59e51f63423702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpawnDelay: 5
   pickablePrefab: {fileID: 1157895748330328, guid: b1688d44305efeb4f8b8739965f1356f,
     type: 2}
 --- !u!4 &1053701801

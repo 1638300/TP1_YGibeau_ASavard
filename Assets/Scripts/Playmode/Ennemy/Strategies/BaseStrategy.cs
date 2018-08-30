@@ -12,24 +12,30 @@ namespace Playmode.Ennemy.Strategies
         protected readonly HandController handController;
         protected EnnemySensor ennemySensor;
         protected PickableSensor pickableSensor;
+        protected bool isWorldColliding;
 
-        private WorldSensor worldSensor;
+        private WorldSensor frontWorldSensor;
+        private WorldSensor backWorldSensor;
         private bool isWorldSeen;
 
         public BaseStrategy(
                             Mover mover, 
                             HandController handController, 
-                            WorldSensor worldSensor, 
+                            WorldSensor frontWorldSensor,
+                            WorldSensor backWorldSensor,
                             EnnemySensor ennemySensor, 
                             PickableSensor pickableSensor)
         {
             this.mover = mover;
-            this.worldSensor = worldSensor;
+            this.frontWorldSensor = frontWorldSensor;
+            this.backWorldSensor = backWorldSensor;
             this.ennemySensor = ennemySensor;
             this.handController = handController;
             this.pickableSensor = pickableSensor;
-            worldSensor.OnWorldSensed += OnWorldSensed;
-            worldSensor.OnWorldUnsensed += OnWorldUnsensed;
+            frontWorldSensor.OnWorldSensed += OnWorldSensedFromFront;
+            frontWorldSensor.OnWorldUnsensed += OnWorldUnsensedFromFront;
+            backWorldSensor.OnWorldSensed += OnWorldSensedFromBack;
+            backWorldSensor.OnWorldUnsensed += OnWorldUnsensedFromBack;
             ennemySensor.OnEnnemySensed += OnEnnemySensed;
             ennemySensor.OnEnnemyUnsensed += OnEnnemyUnsensed;
             pickableSensor.OnPickableSensed += OnPickableSensed;
@@ -38,8 +44,10 @@ namespace Playmode.Ennemy.Strategies
 
         ~BaseStrategy()
         {
-            worldSensor.OnWorldSensed -= OnWorldSensed;
-            worldSensor.OnWorldUnsensed -= OnWorldUnsensed;
+            frontWorldSensor.OnWorldSensed -= OnWorldSensedFromFront;
+            frontWorldSensor.OnWorldUnsensed -= OnWorldUnsensedFromFront;
+            backWorldSensor.OnWorldSensed -= OnWorldSensedFromBack;
+            backWorldSensor.OnWorldUnsensed -= OnWorldUnsensedFromBack;
             ennemySensor.OnEnnemySensed -= OnEnnemySensed;
             ennemySensor.OnEnnemyUnsensed -= OnEnnemyUnsensed;
             pickableSensor.OnPickableSensed -= OnPickableSensed;
@@ -58,14 +66,24 @@ namespace Playmode.Ennemy.Strategies
             }
         }
 
-        private void OnWorldSensed()
+        private void OnWorldSensedFromFront()
         {
             isWorldSeen = true;
         }
 
-        private void OnWorldUnsensed()
+        private void OnWorldUnsensedFromFront()
         {
             isWorldSeen = false;
+        }
+
+        private void OnWorldSensedFromBack()
+        {
+            isWorldColliding = true;
+        }
+
+        private void OnWorldUnsensedFromBack()
+        {
+            isWorldColliding = false;
         }
 
         protected abstract void OnEnnemySensed(EnnemyController ennemy);

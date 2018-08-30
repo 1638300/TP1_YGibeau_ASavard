@@ -10,15 +10,15 @@ namespace Playmode.Ennemy.Strategies
     {
         private bool isEnnemySeen;
         private const int closestDistanceAllowed = 3;
-        private bool isEnnemySeen;
 
         public NormalStrategy(
-                        Mover mover, 
-                        HandController handController, 
-                        WorldSensor worldSensor, 
-                        EnnemySensor ennemySensor, 
-                        PickableSensor pickableSensor)
-            : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
+                            Mover mover,
+                            HandController handController,
+                            WorldSensor frontWorldSensor,
+                            WorldSensor backWorldSensor,
+                            EnnemySensor ennemySensor,
+                            PickableSensor pickableSensor)
+            : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
         {
             
         }

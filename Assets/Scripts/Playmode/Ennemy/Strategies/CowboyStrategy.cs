@@ -12,8 +12,14 @@ namespace Playmode.Ennemy.Strategies
         private const int closestDistanceAllowed = 3;
         private State state = State.Seeking;
 
-        public CowboyStrategy(Mover mover, HandController handController, WorldSensor worldSensor, EnnemySensor ennemySensor, PickableSensor pickableSensor)
-            : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
+        public CowboyStrategy(
+                            Mover mover,
+                            HandController handController,
+                            WorldSensor frontWorldSensor,
+                            WorldSensor backWorldSensor,
+                            EnnemySensor ennemySensor,
+                            PickableSensor pickableSensor)
+            : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
         {
 
         }
