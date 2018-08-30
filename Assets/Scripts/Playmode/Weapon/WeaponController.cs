@@ -10,12 +10,12 @@ namespace Playmode.Weapon
 
         [Header("Behaviour")] [SerializeField] private GameObject bulletPrefab;
         [SerializeField] protected float fireDelayInSeconds = 0.5f;
-        [SerializeField] private int uziDefaultDamage = 8;
-        [SerializeField] private float uziDefaultFireRate = 0.2f;
+        [SerializeField] private int uziDefaultDamage = 10;
+        [SerializeField] private float uziDefaultFireRate = 0.15f;
         [SerializeField] private float uziBonusFireRate = 0.05f;
         [SerializeField] private int shotgunDefaultDamage = 14;
         [SerializeField] private int shotgunBonusDamage = 1;
-        [SerializeField] private float shotgunDefaultFireRate = 2f;
+        [SerializeField] private float shotgunDefaultFireRate = 1.5f;
         [SerializeField] private int shotgunNbBullets = 5;
         [SerializeField] private int shotgunBulletSpacing = 20;
         [SerializeField] private int shotgunBulletSpreading = 40;
@@ -57,19 +57,19 @@ namespace Playmode.Weapon
                     for (int i = 0; i < shotgunNbBullets; i++)
                     {
                         var bulletObject = Instantiate(bulletPrefab, transform.position, transform.rotation);
-                        bulletObject.transform.GetComponentInChildren<BulletController>().SetDamage(damage);
+                        bulletObject.transform.GetComponentInChildren<BulletController>().Damage = damage;
                         bulletObject.transform.Rotate(Vector3.forward, (shotgunBulletSpacing * i - shotgunBulletSpreading));
                     }
                 }
                 else
-                   Instantiate(bulletPrefab, transform.position, transform.rotation).transform.GetComponentInChildren<BulletController>().SetDamage(damage); ;
+                   Instantiate(bulletPrefab, transform.position, transform.rotation).transform.GetComponentInChildren<BulletController>().Damage = damage;
 
                 lastTimeShotInSeconds = Time.time;
             }
         }
 
         public void SetWeaponType(WeaponType type)
-        {
+        {        
           if (weaponType == WeaponType.Default)
           {
               if (type == WeaponType.Shotgun)
@@ -83,7 +83,7 @@ namespace Playmode.Weapon
                   fireDelayInSeconds = uziDefaultFireRate;
               }
           }
-          else if (weaponType == WeaponType.Shotgun)
+          else if (type == WeaponType.Shotgun)
           {
              bonusDamage += shotgunBonusDamage;
              damage = shotgunDefaultDamage + bonusDamage;

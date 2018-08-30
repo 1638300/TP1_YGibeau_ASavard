@@ -45,9 +45,9 @@ namespace Playmode.Ennemy.BodyParts
            throw new NotImplementedException();
         }
 
-            public void Use()
-            {
-                if (weapon != null) weapon.Shoot();
-            }
+        public void Use()
+        {
+           if (weapon != null) weapon.Shoot();
+        }
      }
 }

@@ -15,24 +15,24 @@ namespace Playmode.Ennemy.Strategies
         public CowboyStrategy(Mover mover, HandController handController, WorldSensor worldSensor, EnnemySensor ennemySensor, PickableSensor pickableSensor)
             : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
         {
-            
+
         }
 
         public override void Act()
         {
             switch (state)
             {
-              case State.Seeking:
-                base.Act();
-                break;
+                case State.Seeking:
+                    base.Act();
+                    break;
 
-              case State.Shooting:
-                MoveAndShootTowardsEnnemy();
-                break;
+                case State.Shooting:
+                    MoveAndShootTowardsEnnemy();
+                    break;
 
-              case State.PickingWeapon:
-                MoveTowardsWeapon();
-                break;
+                case State.PickingWeapon:
+                    MoveTowardsWeapon();
+                    break;
             }
         }
 
@@ -41,12 +41,12 @@ namespace Playmode.Ennemy.Strategies
             if (state == State.Seeking)
             {
                 state = State.Shooting;
-            }      
+            }
         }
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if(state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
+            if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
             {
                 state = State.Seeking;
             }
@@ -54,51 +54,58 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnPickableSensed(PickableController pickable)
         {
-          if (state != State.PickingWeapon && pickable.IsWeapon())
-          {
-            state = State.PickingWeapon;
-            base.mover.ExtremeSpeedActivated();
-          }
+            if (state != State.PickingWeapon && pickable.IsWeapon())
+            {
+                state = State.PickingWeapon;
+                base.mover.ExtremeSpeedActivated();
+            }
         }
 
         protected override void OnPickableUnsensed(PickableController pickable)
         {
-          if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon() == null)
-          {
-            if (base.ennemySensor.GetFirstEnnemy == null)
+            if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon() == null)
             {
-              state = State.Seeking;
+                if (base.ennemySensor.GetFirstEnnemy == null)
+                {
+                    state = State.Seeking;
+                }
+                else
+                {
+                    state = State.Shooting;
+                }
             }
-            else
-            {
-              state = State.Shooting;
-            }
-          }
         }
 
         private void MoveAndShootTowardsEnnemy()
         {
-          Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
-          mover.RotateTowards(position);
-          if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
-          {
-            mover.Move(Mover.Foward);
-          }
-          handController.Use();
+            if (ennemySensor.GetFirstEnnemy != null)
+            {
+                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
+                mover.RotateTowards(position);
+                if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
+                {
+                    mover.Move(Mover.Foward);
+                }
+                handController.Use();
+            }
         }
 
+        //Todo : try/catch?
         private void MoveTowardsWeapon()
         {
-          Vector3 position = pickableSensor.GetFirstWeapon().transform.position;
-          mover.RotateTowards(position);
-          mover.Move(Mover.Foward);
+            if (pickableSensor.GetFirstWeapon() != null)
+            {
+                Vector3 position = pickableSensor.GetFirstWeapon().transform.position;
+                mover.RotateTowards(position);
+                mover.Move(Mover.Foward);
+            }
         }
 
         private enum State
         {
-          Seeking,
-          Shooting,
-          PickingWeapon
+            Seeking,
+            Shooting,
+            PickingWeapon
         }
     }
 }

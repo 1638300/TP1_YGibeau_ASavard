@@ -15,6 +15,18 @@ namespace Playmode.Bullet
         private int damage = 1;
         private bool IsAlive => timeSinceSpawnedInSeconds < lifeSpanInSeconds;
 
+        public int Damage
+        {
+            get
+            {
+                return damage;
+            }
+            set
+            {
+                damage = value;
+            }
+        }
+
         private void Awake()
         {
             ValidateSerialisedFields();
@@ -54,9 +66,6 @@ namespace Playmode.Bullet
             else
                 destroyer.Destroy();
         }
-        public void SetDamage(int damage)
-        {
-             this.damage = damage;
-        }
+
     }
 }
