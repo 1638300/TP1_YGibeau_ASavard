@@ -96,7 +96,6 @@ namespace Playmode.Ennemy.Strategies
             }
         }
 
-        //Todo : try/catch?
         private void MoveTowardsWeapon()
         {
             if (pickableSensor.GetFirstWeapon() != null)

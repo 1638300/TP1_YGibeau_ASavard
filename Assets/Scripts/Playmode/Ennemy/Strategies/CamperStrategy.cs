@@ -1,0 +1,150 @@
+﻿using Playmode.Ennemy;
+using Playmode.Ennemy.BodyParts;
+using Playmode.Ennemy.Strategies;
+using Playmode.Entity.Senses;
+using Playmode.Movement;
+using Playmode.Pickables;
+using UnityEngine;
+
+public class CamperStrategy : BaseStrategy
+{
+    private const int closestDistanceAllowedMedkit = 5;
+    private State state = State.Seeking;
+    private bool isLowLife;
+
+    private EnnemyController ennemyController;
+
+    public CamperStrategy(
+                            Mover mover, 
+                            HandController handController, 
+                            WorldSensor worldSensor, 
+                            EnnemySensor ennemySensor,
+                            PickableSensor pickableSensor,
+                            EnnemyController ennemyController) 
+        : base(mover, handController, worldSensor, ennemySensor, pickableSensor)
+    {
+        this.ennemyController = ennemyController;
+        ennemyController.OnLowLife += OnLowLife;
+        ennemyController.OnNormalLife += OnNormalLife;
+    }
+
+    ~CamperStrategy()
+    {
+        ennemyController.OnLowLife -= OnLowLife;
+        ennemyController.OnNormalLife -= OnNormalLife;
+    }
+
+    public override void Act()
+    {
+        switch (state)
+        {
+            case State.Seeking:
+                base.Act();
+                break;
+            case State.PickingMedkit:
+                MoveTowardsMedkit();
+                break;
+            case State.Shooting:
+                ShootTowardsEnnemy();
+                break;
+            case State.PickingWeapon:
+                MoveTowardsWeapon();
+                break;
+            case State.SearchingEnnemy:
+                break;
+        }
+    }
+
+    protected override void OnEnnemySensed(EnnemyController ennemy)
+    {
+        if(state == State.Seeking && !isLowLife)
+        {
+            state = State.Shooting;
+        }
+    }
+
+    protected override void OnEnnemyUnsensed(EnnemyController ennemy)
+    {
+        if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
+        {
+            state = State.Seeking;
+        }
+    }
+
+    protected override void OnPickableSensed(PickableController pickable)
+    {
+        if (state == State.Seeking && pickable.IsWeapon())
+        {
+            state = State.PickingWeapon;
+        }
+        else if(pickable.IsMedkit() && state != State.PickingMedkit && state != State.SearchingEnnemy)
+        {
+            state = State.PickingMedkit;
+        }
+    }
+
+    protected override void OnPickableUnsensed(PickableController pickable)
+    {
+        if (state == State.PickingMedkit && base.pickableSensor.GetFirstMedkit() == null)
+        {
+            state = State.Seeking;
+        }
+        else if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon() == null)
+        {
+            state = State.Seeking;
+        }
+    }
+
+    private void OnLowLife()
+    {
+        isLowLife = true;
+
+        state = State.PickingMedkit;
+    }
+
+    private void OnNormalLife()
+    {
+        isLowLife = false;
+    }
+
+    private void ShootTowardsEnnemy()
+    {
+        Vector3 ennemyPosition = ennemySensor.GetFirstEnnemy.transform.position;
+        mover.RotateTowards(ennemyPosition);
+        handController.Use();
+    }
+
+    private void MoveTowardsWeapon()
+    {
+        Vector3 weaponPosition = pickableSensor.GetFirstWeapon().transform.position;
+        mover.RotateTowards(weaponPosition);
+        mover.Move(Mover.Foward);
+    }
+
+    private void MoveTowardsMedkit()
+    {
+        Vector3 medkitPosition = pickableSensor.GetFirstMedkit().transform.position;
+
+        if (Vector3.Distance(medkitPosition, mover.transform.position) > closestDistanceAllowedMedkit || isLowLife)
+        {
+            mover.RotateTowards(medkitPosition);
+            mover.Move(Mover.Foward);
+        }
+        else
+            state = State.SearchingEnnemy;       
+    }
+
+    private void SearchEnnemy()
+    {
+        mover.Rotate(Mover.Clockwise);
+    }
+
+    private enum State
+    {
+        Seeking,
+        PickingMedkit,
+        SearchingEnnemy,
+        Shooting,
+        PickingWeapon
+    }
+}

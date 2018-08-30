@@ -11,6 +11,7 @@ namespace Playmode.Ennemy.Strategies
         private bool isEnnemySeen;
         private const int closestDistanceAllowed = 3;
 
+
         public NormalStrategy(
                             Mover mover,
                             HandController handController,
