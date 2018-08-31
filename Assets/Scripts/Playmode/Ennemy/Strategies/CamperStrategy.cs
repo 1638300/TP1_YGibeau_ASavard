@@ -88,9 +88,9 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        if (state != State.Seeking && state != State.PickingWeapon && base.pickableSensor.GetFirstMedkit() == null)
+        if (state != State.Seeking && state != State.PickingWeapon && base.pickableSensor.GetFirstMedkit == null)
         {
-            if (base.pickableSensor.GetFirstWeapon() == null)
+            if (base.pickableSensor.GetFirstWeapon == null)
                 state = State.Seeking;
             else
                 state = State.PickingWeapon;
@@ -127,9 +127,9 @@ public class CamperStrategy : BaseStrategy
 
     private void MoveTowardsWeapon()
     {
-        if (pickableSensor.GetFirstWeapon() != null)
+        if (pickableSensor.GetFirstWeapon != null)
         {
-            Vector3 weaponPosition = pickableSensor.GetFirstWeapon().transform.position;
+            Vector3 weaponPosition = pickableSensor.GetFirstWeapon.transform.position;
             mover.RotateTowards(weaponPosition);
             mover.Move(Mover.Foward);
         }
@@ -137,9 +137,9 @@ public class CamperStrategy : BaseStrategy
 
     private void MoveTowardsMedkit()
     {
-        if (pickableSensor.GetFirstMedkit() != null)
+        if (pickableSensor.GetFirstMedkit != null)
         {
-            Vector3 medkitPosition = pickableSensor.GetFirstMedkit().transform.position;
+            Vector3 medkitPosition = pickableSensor.GetFirstMedkit.transform.position;
 
             if (Vector3.Distance(medkitPosition, mover.transform.position) > closestDistanceAllowedMedkit || isLowLife)
             {
