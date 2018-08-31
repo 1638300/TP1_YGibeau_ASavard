@@ -37,7 +37,6 @@ public class CamperStrategy : BaseStrategy
 
     public override void Act()
     {
-        Debug.Log(state);
         switch (state)
         {
             case State.Seeking:
