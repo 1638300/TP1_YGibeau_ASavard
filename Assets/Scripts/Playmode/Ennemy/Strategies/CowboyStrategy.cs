@@ -69,7 +69,7 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnPickableUnsensed(PickableController pickable)
         {
-            if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon() == null)
+            if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon == null)
             {
                 if (base.ennemySensor.GetFirstEnnemy == null)
                 {
@@ -98,9 +98,9 @@ namespace Playmode.Ennemy.Strategies
 
         private void MoveTowardsWeapon()
         {
-            if (pickableSensor.GetFirstWeapon() != null)
+            if (pickableSensor.GetFirstWeapon != null)
             {
-                Vector3 position = pickableSensor.GetFirstWeapon().transform.position;
+                Vector3 position = pickableSensor.GetFirstWeapon.transform.position;
                 mover.RotateTowards(position);
                 mover.Move(Mover.Foward);
             }

@@ -15,28 +15,34 @@ namespace Playmode.Entity.Senses
 
         public IEnumerable<PickableController> PickablesInSight => pickablesInSight;
 
-        public PickableController GetFirstMedkit()
+        public PickableController GetFirstMedkit
         {
-          foreach (PickableController pickableController in pickablesInSight)
-          {
-            if (pickableController.IsMedkit())
+            get
             {
-              return pickableController;
+                foreach (PickableController pickableController in pickablesInSight)
+                {
+                    if (pickableController.IsMedkit())
+                    {
+                        return pickableController;
+                    }
+                }
+                return null;
             }
-          }
-          return null;
         }
 
-        public PickableController GetFirstWeapon()
+        public PickableController GetFirstWeapon
         {
-          foreach (PickableController pickableController in pickablesInSight)
-          {
-            if (pickableController.IsWeapon())
+            get
             {
-              return pickableController;
+                foreach (PickableController pickableController in pickablesInSight)
+                {
+                    if (pickableController.IsWeapon())
+                    {
+                        return pickableController;
+                    }
+                }
+                return null;
             }
-          }
-          return null;
         }
 
         private void Awake()
