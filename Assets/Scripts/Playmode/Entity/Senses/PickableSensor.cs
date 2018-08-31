@@ -59,7 +59,6 @@ namespace Playmode.Entity.Senses
 
         public void Sense(PickableController pickable)
         {
-            Debug.Log("Sensed pickable");
             pickablesInSight.Add(pickable);
 
             pickable.onDestroy += Unsense;

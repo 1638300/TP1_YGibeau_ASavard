@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class CamperStrategy : BaseStrategy
 {
-    private const int closestDistanceAllowedMedkit = 6;
+    private const float closestDistanceAllowedMedkit = 3.0f;
     private State state = State.Seeking;
     private bool isLowLife = false;
 
@@ -60,7 +60,6 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnEnnemySensed(EnnemyController ennemy)
     {
-        Debug.Log("Sensed ennemy");
         if (state == State.SearchingEnnemy)
         {
             state = State.Shooting;
@@ -69,7 +68,6 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnEnnemyUnsensed(EnnemyController ennemy)
     {
-        Debug.Log("Unsensed ennemy");
         if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
         {
             state = State.SearchingEnnemy;
@@ -78,21 +76,18 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnPickableSensed(PickableController pickable)
     {
-        Debug.Log("Sensed");
         if (state == State.Seeking && pickable.IsWeapon())
         {
             state = State.PickingWeapon;
         }
-        else if(pickable.IsMedkit() && state != State.PickingMedkit && state != State.SearchingEnnemy)
+        else if(pickable.IsMedkit() && state != State.PickingMedkit && state != State.SearchingEnnemy && state != State.Shooting)
         {
-            Debug.Log("Targeted");
             state = State.PickingMedkit;
         }
     }
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        Debug.Log("Unsensed");
         if (state == State.PickingMedkit && base.pickableSensor.GetFirstMedkit() == null)
         {
             state = State.Seeking;
@@ -105,6 +100,7 @@ public class CamperStrategy : BaseStrategy
 
     private void OnLowLife()
     {
+        Debug.Log("LOW LIFE");
         isLowLife = true;
         if (base.pickableSensor.GetFirstMedkit() != null)
         {

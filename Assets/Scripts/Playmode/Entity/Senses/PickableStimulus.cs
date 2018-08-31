@@ -21,7 +21,6 @@ namespace Playmode.Entity.Senses
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log("Collided with sensor");
             other.GetComponent<PickableSensor>()?.Sense(pickable);
         }
 
