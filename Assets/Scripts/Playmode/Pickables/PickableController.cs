@@ -1,11 +1,11 @@
-﻿using System;
-using Playmode.Pickables.Types;
-using Playmode.Entity.Senses;
-using UnityEngine;
-using Playmode.Ennemy;
-using Playmode.Entity.Destruction;
+﻿using Playmode.Ennemy;
 using Playmode.Ennemy.BodyParts;
+using Playmode.Entity.Destruction;
+using Playmode.Entity.Senses;
+using Playmode.Pickables.Types;
 using Playmode.Weapon;
+using System;
+using UnityEngine;
 
 namespace Playmode.Pickables
 {

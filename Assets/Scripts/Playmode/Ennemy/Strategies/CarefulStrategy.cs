@@ -84,34 +84,20 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon == null)
+        if (base.pickableSensor.GetFirstMedkit == null && !isLowLife)
         {
             if (base.ennemySensor.GetFirstEnnemy == null)
             {
-                state = State.Seeking;
+                if (base.pickableSensor.GetFirstWeapon == null)
+                    state = State.Seeking;
+                else
+                    state = State.PickingWeapon;
             }
             else
-            {
                 state = State.Shooting;
-            }
-
         }
-        else if(state == State.PickingMedkit && base.pickableSensor.GetFirstMedkit == null)
-        {
-            if(base.ennemySensor.GetFirstEnnemy != null)
-            {
-
-                state = State.Shooting;
-            }
-            else if(base.pickableSensor.GetFirstWeapon != null)
-            {
-                state = State.PickingWeapon;
-            }
-            else
-            {
-                state = State.Seeking;
-            }
-        }
+        else if (state != State.Shooting || state != State.PickingWeapon || isLowLife)
+            state = State.PickingMedkit;
     }
 
     private void OnLowLife()

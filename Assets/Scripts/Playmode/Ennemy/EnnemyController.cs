@@ -1,13 +1,11 @@
-﻿using System;
-using Playmode.Pickables;
-using Playmode.Ennemy.BodyParts;
+﻿using Playmode.Ennemy.BodyParts;
 using Playmode.Ennemy.Strategies;
 using Playmode.Entity.Destruction;
 using Playmode.Entity.Senses;
 using Playmode.Entity.Status;
 using Playmode.Movement;
+using System;
 using UnityEngine;
-using Playmode.Util.Values;
 
 namespace Playmode.Ennemy
 {

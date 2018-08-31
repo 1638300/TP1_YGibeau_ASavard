@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using Playmode.Util;
-using Playmode.Util.Values;
+﻿using Playmode.Util.Values;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

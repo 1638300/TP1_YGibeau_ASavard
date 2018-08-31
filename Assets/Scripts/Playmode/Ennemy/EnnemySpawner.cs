@@ -1,7 +1,6 @@
-﻿using System;
-using Playmode.Ennemy.Strategies;
-using Playmode.Util;
+﻿using Playmode.Ennemy.Strategies;
 using Playmode.Util.Collections;
+using System;
 using UnityEngine;
 
 namespace Playmode.Ennemy
