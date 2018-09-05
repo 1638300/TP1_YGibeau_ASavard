@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class CamperStrategy : BaseStrategy
 {
-    private const float closestDistanceAllowedMedkit = 3.0f;
+    private const float CLOSEST_DISTANCE_ALLOWED_MEDKIT = 3.0f;
     private State state = State.Seeking;
 
     private Health health;
@@ -127,7 +127,7 @@ public class CamperStrategy : BaseStrategy
         {
             Vector3 medkitPosition = pickableSensor.GetFirstMedkit.transform.position;
 
-            if (Vector3.Distance(medkitPosition, mover.transform.position) > closestDistanceAllowedMedkit || health.IsLowLife)
+            if (Vector3.Distance(medkitPosition, mover.transform.position) > CLOSEST_DISTANCE_ALLOWED_MEDKIT || health.IsLowLife)
             {
                 mover.RotateTowards(medkitPosition);
                 mover.Move(Mover.Foward);
@@ -141,7 +141,7 @@ public class CamperStrategy : BaseStrategy
 
     private void SearchEnnemy()
     {
-        mover.Rotate(Mover.Clockwise);
+        mover.Rotate(Mover.CLOCKWISE);
     }
 
     private enum State

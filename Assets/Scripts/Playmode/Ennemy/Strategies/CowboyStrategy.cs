@@ -52,7 +52,7 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if (_state == State.Shooting && EnnemySensor.GetFirstEnnemy == null)
+            if (_state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
             {
                 _state = State.Seeking;
             }
@@ -63,15 +63,15 @@ namespace Playmode.Ennemy.Strategies
             if (_state != State.PickingWeapon && pickable.IsWeapon())
             {
                 _state = State.PickingWeapon;
-                base.Mover.ExtremeSpeedActivated();
+                base.mover.ExtremeSpeedActivated();
             }
         }
 
         protected override void OnPickableUnsensed(PickableController pickable)
         {
-            if (_state == State.PickingWeapon && base.PickableSensor.GetFirstWeapon == null)
+            if (_state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon == null)
             {
-                if (base.EnnemySensor.GetFirstEnnemy == null)
+                if (base.ennemySensor.GetFirstEnnemy == null)
                 {
                     _state = State.Seeking;
                 }
@@ -84,25 +84,25 @@ namespace Playmode.Ennemy.Strategies
 
         private void MoveAndShootTowardsEnnemy()
         {
-            if (EnnemySensor.GetFirstEnnemy != null)
+            if (ennemySensor.GetFirstEnnemy != null)
             {
-                Vector3 position = EnnemySensor.GetFirstEnnemy.transform.position;
-                Mover.RotateTowards(position);
-                if (Vector3.Distance(position, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
+                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
+                mover.RotateTowards(position);
+                if (Vector3.Distance(position, mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
                 {
-                    Mover.Move(Mover.Foward);
+                    mover.Move(Mover.Foward);
                 }
-                HandController.Use();
+                handController.Use();
             }
         }
 
         private void MoveTowardsWeapon()
         {
-            if (PickableSensor.GetFirstWeapon != null)
+            if (pickableSensor.GetFirstWeapon != null)
             {
-                Vector3 position = PickableSensor.GetFirstWeapon.transform.position;
-                Mover.RotateTowards(position);
-                Mover.Move(Mover.Foward);
+                Vector3 position = pickableSensor.GetFirstWeapon.transform.position;
+                mover.RotateTowards(position);
+                mover.Move(Mover.Foward);
             }
         }
 

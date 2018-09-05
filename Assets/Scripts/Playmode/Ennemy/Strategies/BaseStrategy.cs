@@ -8,11 +8,11 @@ namespace Playmode.Ennemy.Strategies
 {
     public abstract class BaseStrategy : IEnnemyStrategy
     {
-        protected readonly Mover Mover;
-        protected readonly HandController HandController;
-        protected EnnemySensor EnnemySensor;
-        protected PickableSensor PickableSensor;
-        protected bool IsWorldColliding;
+        protected readonly Mover mover;
+        protected readonly HandController handController;
+        protected EnnemySensor ennemySensor;
+        protected PickableSensor pickableSensor;
+        protected bool isWorldColliding;
 
         private WorldSensor _frontWorldSensor;
         private WorldSensor _backWorldSensor;
@@ -26,12 +26,12 @@ namespace Playmode.Ennemy.Strategies
                             EnnemySensor ennemySensor, 
                             PickableSensor pickableSensor)
         {
-            this.Mover = mover;
+            this.mover = mover;
             this._frontWorldSensor = frontWorldSensor;
             this._backWorldSensor = backWorldSensor;
-            this.EnnemySensor = ennemySensor;
-            this.HandController = handController;
-            this.PickableSensor = pickableSensor;
+            this.ennemySensor = ennemySensor;
+            this.handController = handController;
+            this.pickableSensor = pickableSensor;
             frontWorldSensor.OnWorldSensed += OnWorldSensedFromFront;
             frontWorldSensor.OnWorldUnsensed += OnWorldUnsensedFromFront;
             backWorldSensor.OnWorldSensed += OnWorldSensedFromBack;
@@ -46,11 +46,11 @@ namespace Playmode.Ennemy.Strategies
         {
             if (_isWorldSeen)
             {
-                Mover.Rotate(Mover.CLOCKWISE);
+                mover.Rotate(Mover.CLOCKWISE);
             }
             else
             {
-                Mover.Move(Mover.Foward);
+                mover.Move(Mover.Foward);
             }
         }
 
@@ -66,12 +66,12 @@ namespace Playmode.Ennemy.Strategies
 
         private void OnWorldSensedFromBack()
         {
-            IsWorldColliding = true;
+            isWorldColliding = true;
         }
 
         private void OnWorldUnsensedFromBack()
         {
-            IsWorldColliding = false;
+            isWorldColliding = false;
         }
 
         protected abstract void OnEnnemySensed(EnnemyController ennemy);

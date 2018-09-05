@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class CarefulStrategy : BaseStrategy
 {
-    private const int closestDistanceAllowed = 8;
+    private const int CLOSEST_DISTANCE_ALLOWED = 8;
     private State state = State.Seeking;
 
     private Health health;
@@ -124,9 +124,9 @@ public class CarefulStrategy : BaseStrategy
 
             mover.RotateTowards(ennemyPosition);
 
-            if (Vector3.Distance(ennemyPosition, mover.transform.position) > closestDistanceAllowed)
+            if (Vector3.Distance(ennemyPosition, mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
                 mover.Move(Mover.Foward);
-            else if (Vector3.Distance(ennemyPosition, mover.transform.position) < closestDistanceAllowed && !isWorldColliding)
+            else if (Vector3.Distance(ennemyPosition, mover.transform.position) < CLOSEST_DISTANCE_ALLOWED && !isWorldColliding)
                 mover.Move(Mover.Backward);
 
             handController.Use();

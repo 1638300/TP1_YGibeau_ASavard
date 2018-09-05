@@ -28,13 +28,13 @@ namespace Playmode.Ennemy.Strategies
         {
             if (_isEnnemySeen)
             {
-                Vector3 position = EnnemySensor.GetFirstEnnemy.transform.position;
-                Mover.RotateTowards(position);
-                if(Vector3.Distance(position, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
+                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
+                mover.RotateTowards(position);
+                if(Vector3.Distance(position, mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
                 {
-                    Mover.Move(Mover.Foward);
+                    mover.Move(Mover.Foward);
                 }
-                HandController.Use();
+                handController.Use();
             }
             else
             {
@@ -49,7 +49,7 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if(EnnemySensor.GetFirstEnnemy == null)
+            if(ennemySensor.GetFirstEnnemy == null)
             {
                 _isEnnemySeen = false;
             }
