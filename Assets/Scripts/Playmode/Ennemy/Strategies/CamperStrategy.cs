@@ -11,7 +11,6 @@ public class CamperStrategy : BaseStrategy
 {
     private const float CLOSEST_DISTANCE_ALLOWED_MEDKIT = 3.0f;
     private State state = State.Seeking;
-
     private Health health;
 
     public CamperStrategy(

@@ -61,6 +61,10 @@ namespace Playmode.Ennemy
                 throw new ArgumentException("Type sprites must be provided. Camper is missing.");
             if (startingWeaponPrefab == null)
                 throw new ArgumentException("StartingWeapon prefab must be provided.");
+            if(frontWorldSensor == null)
+                throw new ArgumentException("frontWorldSensor must be provided.");
+            if (backWorldSensor == null)
+                throw new ArgumentException("backWorldSensor must be provided.");
         }
 
         private void InitializeComponent()
@@ -166,8 +170,6 @@ namespace Playmode.Ennemy
 
         private void OnDeath(EnnemyController ennemy)
         {
-            Debug.Log("Yaaaaarggg....!! I died....GG.");
-
             destroyer.Destroy();
         }
     }
