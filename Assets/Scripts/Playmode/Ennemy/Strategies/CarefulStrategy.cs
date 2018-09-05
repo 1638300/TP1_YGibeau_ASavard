@@ -11,7 +11,6 @@ public class CarefulStrategy : BaseStrategy
 {
     private const int CLOSEST_DISTANCE_ALLOWED = 8;
     private State state = State.Seeking;
-
     private Health health;
 
     public CarefulStrategy(

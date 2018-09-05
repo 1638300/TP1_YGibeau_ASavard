@@ -53,6 +53,8 @@ namespace Playmode.Pickables
                 throw new ArgumentException("Type sprites must be provided. Shotgun is missing.");
             if (uziSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Uzi is missing.");
+            if(_hitpoints < 0)
+                throw new ArgumentException("_hitpoints can't be lower than 0.");
         }
 
         private void InitializeComponents()
