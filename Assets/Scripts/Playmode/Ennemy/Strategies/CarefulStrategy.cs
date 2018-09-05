@@ -2,6 +2,7 @@
 using Playmode.Ennemy.BodyParts;
 using Playmode.Ennemy.Strategies;
 using Playmode.Entity.Senses;
+using Playmode.Entity.Status;
 using Playmode.Movement;
 using Playmode.Pickables;
 using UnityEngine;
@@ -10,9 +11,8 @@ public class CarefulStrategy : BaseStrategy
 {
     private const int closestDistanceAllowed = 8;
     private State state = State.Seeking;
-    private bool isLowLife;
 
-    private EnnemyController ennemyController;
+    private Health health;
 
     public CarefulStrategy(
                             Mover mover, 
@@ -21,18 +21,12 @@ public class CarefulStrategy : BaseStrategy
                             WorldSensor backWorldSensor,
                             EnnemySensor ennemySensor,
                             PickableSensor pickableSensor,
-                            EnnemyController ennemyController) 
+                            Health health) 
         : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
     {
-        this.ennemyController = ennemyController;
-        ennemyController.OnLowLife += OnLowLife;
-        ennemyController.OnNormalLife += OnNormalLife;
-    }
-
-    ~CarefulStrategy()
-    {
-        ennemyController.OnLowLife -= OnLowLife;
-        ennemyController.OnNormalLife -= OnNormalLife;
+        this.health = health;
+        health.OnLowLife += OnLowLife;
+        health.OnNormalLife += OnNormalLife;
     }
 
     public override void Act()
@@ -56,7 +50,7 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnEnnemySensed(EnnemyController ennemy)
     {
-        if(state == State.Seeking && !isLowLife)
+        if(state == State.Seeking && !health.IsLowLife)
         {
             state = State.Shooting;
         }
@@ -76,7 +70,7 @@ public class CarefulStrategy : BaseStrategy
         {
             state = State.PickingMedkit;
         }
-        if(pickable.IsWeapon() && state == State.Seeking && !isLowLife)
+        if(pickable.IsWeapon() && state == State.Seeking && !health.IsLowLife)
         {
             state = State.PickingWeapon;
         }
@@ -84,7 +78,7 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        if (base.pickableSensor.GetFirstMedkit == null && !isLowLife)
+        if (base.pickableSensor.GetFirstMedkit == null && !health.IsLowLife)
         {
             if (base.ennemySensor.GetFirstEnnemy == null)
             {
@@ -96,24 +90,21 @@ public class CarefulStrategy : BaseStrategy
             else
                 state = State.Shooting;
         }
-        else if (state != State.Shooting || state != State.PickingWeapon || isLowLife)
+        else if (state != State.Shooting || state != State.PickingWeapon || health.IsLowLife)
             state = State.PickingMedkit;
     }
 
     private void OnLowLife()
     {
-        if(!isLowLife)
+        if(!health.IsLowLife)
         {
-            isLowLife = true;
             base.mover.ExtremeSpeedActivated();
+            state = State.Seeking;
         }
-
-        state = State.Seeking;
     }
 
     private void OnNormalLife()
     {
-        isLowLife = false;
         if(base.pickableSensor.GetFirstMedkit != null)
         {
             state = State.PickingMedkit;

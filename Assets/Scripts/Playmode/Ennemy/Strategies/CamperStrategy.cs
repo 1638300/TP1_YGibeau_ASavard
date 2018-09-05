@@ -2,6 +2,7 @@
 using Playmode.Ennemy.BodyParts;
 using Playmode.Ennemy.Strategies;
 using Playmode.Entity.Senses;
+using Playmode.Entity.Status;
 using Playmode.Movement;
 using Playmode.Pickables;
 using UnityEngine;
@@ -10,9 +11,8 @@ public class CamperStrategy : BaseStrategy
 {
     private const float closestDistanceAllowedMedkit = 3.0f;
     private State state = State.Seeking;
-    private bool isLowLife = false;
 
-    private EnnemyController ennemyController;
+    private Health health;
 
     public CamperStrategy(
                             Mover mover, 
@@ -21,18 +21,11 @@ public class CamperStrategy : BaseStrategy
                             WorldSensor backWorldSensor,
                             EnnemySensor ennemySensor,
                             PickableSensor pickableSensor,
-                            EnnemyController ennemyController) 
+                            Health health) 
         : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
     {
-        this.ennemyController = ennemyController;
-        ennemyController.OnLowLife += OnLowLife;
-        ennemyController.OnNormalLife += OnNormalLife;
-    }
-
-    ~CamperStrategy()
-    {
-        ennemyController.OnLowLife -= OnLowLife;
-        ennemyController.OnNormalLife -= OnNormalLife;
+        this.health = health;
+        health.OnLowLife += OnLowLife;
     }
 
     public override void Act()
@@ -102,16 +95,10 @@ public class CamperStrategy : BaseStrategy
 
     private void OnLowLife()
     {
-        isLowLife = true;
         if (base.pickableSensor.GetFirstMedkit != null)
         {
             state = State.PickingMedkit;
         }
-    }
-
-    private void OnNormalLife()
-    {
-        isLowLife = false;
     }
 
     private void ShootTowardsEnnemy()
@@ -140,7 +127,7 @@ public class CamperStrategy : BaseStrategy
         {
             Vector3 medkitPosition = pickableSensor.GetFirstMedkit.transform.position;
 
-            if (Vector3.Distance(medkitPosition, mover.transform.position) > closestDistanceAllowedMedkit || isLowLife)
+            if (Vector3.Distance(medkitPosition, mover.transform.position) > closestDistanceAllowedMedkit || health.IsLowLife)
             {
                 mover.RotateTowards(medkitPosition);
                 mover.Move(Mover.Foward);

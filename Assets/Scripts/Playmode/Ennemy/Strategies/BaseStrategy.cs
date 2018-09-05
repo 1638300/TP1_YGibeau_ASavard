@@ -42,18 +42,6 @@ namespace Playmode.Ennemy.Strategies
             pickableSensor.OnPickableUnsensed += OnPickableUnsensed;
         }
 
-        ~BaseStrategy()
-        {
-            frontWorldSensor.OnWorldSensed -= OnWorldSensedFromFront;
-            frontWorldSensor.OnWorldUnsensed -= OnWorldUnsensedFromFront;
-            backWorldSensor.OnWorldSensed -= OnWorldSensedFromBack;
-            backWorldSensor.OnWorldUnsensed -= OnWorldUnsensedFromBack;
-            ennemySensor.OnEnnemySensed -= OnEnnemySensed;
-            ennemySensor.OnEnnemyUnsensed -= OnEnnemyUnsensed;
-            pickableSensor.OnPickableSensed -= OnPickableSensed;
-            pickableSensor.OnPickableUnsensed -= OnPickableUnsensed;
-        }
-
         public virtual void Act()
         {
             if (isWorldSeen)

@@ -9,8 +9,6 @@ using UnityEngine;
 
 namespace Playmode.Ennemy
 {
-    public delegate void LowLifeEventHandler();
-
     public class EnnemyController : MonoBehaviour
     {
         [Header("Body Parts")] [SerializeField] private GameObject body;
@@ -22,12 +20,8 @@ namespace Playmode.Ennemy
         [SerializeField] private Sprite cowboySprite;
         [SerializeField] private Sprite camperSprite;
         [Header("Behaviour")] [SerializeField] private GameObject startingWeaponPrefab;
-        [SerializeField] private int lowLifeThreshold;
         [SerializeField] private WorldSensor frontWorldSensor;
         [SerializeField] private WorldSensor backWorldSensor;
-
-        public event LowLifeEventHandler OnLowLife;
-        public event LowLifeEventHandler OnNormalLife;
 
         private Health health;
         private Mover mover;
@@ -37,19 +31,8 @@ namespace Playmode.Ennemy
         private HitSensor hitSensor;
         private HandController handController;
         private IEnnemyStrategy strategy;
-        private bool isLowLife;
-        
-        public bool IsLowLife
-        {
-            get
-            {
-                return isLowLife;
-            }
-            private set
-            {
-                isLowLife = value;
-            }
-        }
+
+        public bool IsLowLife { get; private set; }
 
         private void Awake()
         {
@@ -135,7 +118,7 @@ namespace Playmode.Ennemy
                                                         backWorldSensor, 
                                                         ennemySensor, 
                                                         pickableSensor, 
-                                                        this);
+                                                        health);
                     break;
                 case EnnemyStrategy.Cowboy:
                     typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
@@ -156,7 +139,7 @@ namespace Playmode.Ennemy
                                                         backWorldSensor,
                                                         ennemySensor,
                                                         pickableSensor,
-                                                        this);
+                                                        health);
                     break;
                 default:
                     typeSign.GetComponent<SpriteRenderer>().sprite = normalSprite;
@@ -171,34 +154,14 @@ namespace Playmode.Ennemy
             }
         }
 
-        public void NotifyLowLife()
-        {
-            if (OnLowLife != null) OnLowLife();
-        }
-
-        public void NotifyNormalLife()
-        {
-            if (OnNormalLife != null) OnNormalLife();
-        }
-
         public void Heal(int hitpoints)
         {
             health.Heal(hitpoints);
-            if (health.HealthPoints > lowLifeThreshold)
-            {
-                IsLowLife = false;
-                NotifyNormalLife();
-            }
         }
 
         private void OnHit(int hitPoints)
         {
             health.Hit(hitPoints);
-            if(health.HealthPoints < lowLifeThreshold)
-            {
-                IsLowLife = true;
-                NotifyLowLife();
-            }
         }
 
         private void OnDeath(EnnemyController ennemy)
