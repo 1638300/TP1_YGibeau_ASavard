@@ -10,7 +10,7 @@ namespace Playmode.Weapon
 
         [Header("Behaviour")] [SerializeField] private GameObject bulletPrefab;
         [Header("Global stats")] [SerializeField] protected float FireDelayInSeconds = 0.5f;
-        [SerializeField] private int _damage = 10;
+        [SerializeField] private int damage = 10;
         [Header("Uzi stats")] [SerializeField] private int uziDefaultDamage = 10;
         [SerializeField] private float uziDefaultFireRate = 0.15f;
         [SerializeField] private float uziBonusFireRate = 0.05f;
@@ -28,7 +28,7 @@ namespace Playmode.Weapon
 
         
 
-        private int _bonusDamage = 0;
+        private int bonusDamage = 0;
 
         private WeaponType weaponType = WeaponType.Default;
 
@@ -40,29 +40,29 @@ namespace Playmode.Weapon
 
         private void ValidateSerialisedFields()
         {
-            if(_bulletPrefab == null)
+            if(bulletPrefab == null)
                 throw new ArgumentException("_bulletPrefab must be provided.");
             if (FireDelayInSeconds < 0)
                 throw new ArgumentException("FireRate can't be lower than 0.");
-            if (_damage < 0)
+            if (damage < 0)
                 throw new ArgumentException("_damage can't be lower than 0.");
-            if (_uziDefaultDamage < 0)
+            if (uziDefaultDamage < 0)
                 throw new ArgumentException("_uziDefaultDamage can't be lower than 0.");
-            if (_uziDefaultFireRate < 0)
+            if (uziDefaultFireRate < 0)
                 throw new ArgumentException("_uziDefaultFireRate can't be lower than 0.");
-            if (_uziBonusFireRate < 0)
+            if (uziBonusFireRate < 0)
                 throw new ArgumentException("_uziBonusFireRate can't be lower than 0.");
-            if (_shotgunDefaultDamage < 0)
+            if (shotgunDefaultDamage < 0)
                 throw new ArgumentException("_shotgunDefaultDamage can't be lower than 0.");
-            if (_shotgunBonusDamage < 0)
+            if (shotgunBonusDamage < 0)
                 throw new ArgumentException("_shotgunBonusDamage can't be lower than 0.");
-            if (_shotgunDefaultFireRate < 0)
+            if (shotgunDefaultFireRate < 0)
                 throw new ArgumentException("_shotgunDefaultFireRate can't be lower than 0.");
-            if (_shotgunNbBullets < 0)
+            if (shotgunNbBullets < 0)
                 throw new ArgumentException("_shotgunNbBullets can't be lower than 0.");
-            if (_shotgunBulletSpacing < 0)
+            if (shotgunBulletSpacing < 0)
                 throw new ArgumentException("_shotgunBulletSpacing can't be lower than 0.");
-            if (_shotgunBulletSpreading < 0)
+            if (shotgunBulletSpreading < 0)
                 throw new ArgumentException("_shotgunBulletSpreading can't be lower than 0.");
         }
 

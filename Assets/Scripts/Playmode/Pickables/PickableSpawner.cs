@@ -8,11 +8,11 @@ namespace Playmode.Pickables
 {
     public class PickableSpawner : MonoBehaviour
     {
-        [SerializeField] private float _spawnDelay = 5;
-        [SerializeField] private GameObject _pickablePrefab;
+        [SerializeField] private float spawnDelay = 5;
+        [SerializeField] private GameObject pickablePrefab;
 
-        private PickableController[] _pickableControllers;
-        private readonly LoopingEnumerator<PickableTypes> _typeProvider = new LoopingEnumerator<PickableTypes>(_defaultPickables);
+        private PickableController[] pickableControllers;
+        private readonly LoopingEnumerator<PickableTypes> typeProvider = new LoopingEnumerator<PickableTypes>(_defaultPickables);
 
         private static PickableTypes[] _defaultPickables =
         {
