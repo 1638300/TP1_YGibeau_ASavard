@@ -412,8 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e243a522a9634089beb34b0ceb4d40dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints: 100
-  lowLifeThreshold: 30
+  healthPoints: 200
+  lowLifeThreshold: 150
 --- !u!114 &114785109227199278
 MonoBehaviour:
   m_ObjectHideFlags: 1

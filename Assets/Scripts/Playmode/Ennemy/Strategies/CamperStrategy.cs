@@ -12,6 +12,7 @@ public class CamperStrategy : BaseStrategy
     private const float CLOSEST_DISTANCE_ALLOWED_MEDKIT = 3.0f;
     private State state = State.Seeking;
     private Health health;
+    private Vector3? medkitPosition;
 
     public CamperStrategy(
                             Mover mover, 
@@ -74,6 +75,7 @@ public class CamperStrategy : BaseStrategy
         else if(pickable.IsMedkit() && state != State.PickingMedkit && state != State.SearchingEnnemy && state != State.Shooting)
         {
             state = State.PickingMedkit;
+            medkitPosition = pickable.transform.position;
         }
     }
 
@@ -81,6 +83,7 @@ public class CamperStrategy : BaseStrategy
     {
         if (state != State.Seeking && state != State.PickingWeapon && base.PickableSensor.GetFirstMedkit == null)
         {
+            medkitPosition = null;
             if (base.PickableSensor.GetFirstWeapon == null)
                 state = State.Seeking;
             else
@@ -89,6 +92,10 @@ public class CamperStrategy : BaseStrategy
         else if (state == State.PickingWeapon && base.PickableSensor.GetFirstWeapon == null)
         {
             state = State.Seeking;
+        }
+        else if (pickable.IsMedkit())
+        {
+            medkitPosition = base.PickableSensor.GetFirstMedkit.transform.position;
         }
     }
 
@@ -122,13 +129,11 @@ public class CamperStrategy : BaseStrategy
 
     private void MoveTowardsMedkit()
     {
-        if (PickableSensor.GetFirstMedkit != null)
+        if (medkitPosition != null)
         {
-            Vector3 medkitPosition = PickableSensor.GetFirstMedkit.transform.position;
-
-            if (Vector3.Distance(medkitPosition, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED_MEDKIT || health.IsLowLife)
+            if (Vector3.Distance((Vector3)medkitPosition, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED_MEDKIT || health.IsLowLife)
             {
-                Mover.RotateTowards(medkitPosition);
+                Mover.RotateTowards((Vector3)medkitPosition);
                 Mover.Move(Mover.Foward);
             }
             else
