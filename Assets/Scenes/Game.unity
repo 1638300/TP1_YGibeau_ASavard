@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdf5b0c5c591cc4fb59e51f63423702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnDelay: 5
+  spawnDelay: 5
   pickablePrefab: {fileID: 1157895748330328, guid: b1688d44305efeb4f8b8739965f1356f,
     type: 2}
 --- !u!4 &1053701801
@@ -738,8 +738,8 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 1, g: 0, b: 1, a: 1}
   - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0.49019608, b: 0, a: 1}
-  - {r: 255, g: 100, b: 0, a: 255}
+  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  - {r: 255, g: 125, b: 0, a: 255}
 --- !u!4 &2073673047
 Transform:
   m_ObjectHideFlags: 0

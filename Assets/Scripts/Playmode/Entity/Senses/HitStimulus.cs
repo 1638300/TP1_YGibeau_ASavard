@@ -7,16 +7,16 @@ namespace Playmode.Entity.Senses
     public class HitStimulus : MonoBehaviour
     {
 
-        private BulletController _bulletController;
+        private BulletController bulletController;
 
         private void Awake()
         {
-            _bulletController = transform.root.GetComponentInChildren<BulletController>();
+            bulletController = transform.root.GetComponentInChildren<BulletController>();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            other.GetComponent<Entity.Senses.HitSensor>()?.Hit(_bulletController.Damage);
+            other.GetComponent<Entity.Senses.HitSensor>()?.Hit(bulletController.Damage);
         }
     }
 }

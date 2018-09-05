@@ -60,7 +60,7 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnEnnemyUnsensed(EnnemyController ennemy)
     {
-        if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
+        if (state == State.Shooting && EnnemySensor.GetFirstEnnemy == null)
         {
             state = State.SearchingEnnemy;
         }
@@ -80,14 +80,14 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        if (state != State.Seeking && state != State.PickingWeapon && base.pickableSensor.GetFirstMedkit == null)
+        if (state != State.Seeking && state != State.PickingWeapon && base.PickableSensor.GetFirstMedkit == null)
         {
-            if (base.pickableSensor.GetFirstWeapon == null)
+            if (base.PickableSensor.GetFirstWeapon == null)
                 state = State.Seeking;
             else
                 state = State.PickingWeapon;
         }
-        else if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon == null)
+        else if (state == State.PickingWeapon && base.PickableSensor.GetFirstWeapon == null)
         {
             state = State.Seeking;
         }
@@ -95,7 +95,7 @@ public class CamperStrategy : BaseStrategy
 
     private void OnLowLife()
     {
-        if (base.pickableSensor.GetFirstMedkit != null)
+        if (base.PickableSensor.GetFirstMedkit != null)
         {
             state = State.PickingMedkit;
         }
@@ -103,34 +103,34 @@ public class CamperStrategy : BaseStrategy
 
     private void ShootTowardsEnnemy()
     {
-        if (ennemySensor.GetFirstEnnemy != null)
+        if (EnnemySensor.GetFirstEnnemy != null)
         {
-            Vector3 ennemyPosition = ennemySensor.GetFirstEnnemy.transform.position;
-            mover.RotateTowards(ennemyPosition);
-            handController.Use();
+            Vector3 ennemyPosition = EnnemySensor.GetFirstEnnemy.transform.position;
+            Mover.RotateTowards(ennemyPosition);
+            HandController.Use();
         }
     }
 
     private void MoveTowardsWeapon()
     {
-        if (pickableSensor.GetFirstWeapon != null)
+        if (PickableSensor.GetFirstWeapon != null)
         {
-            Vector3 weaponPosition = pickableSensor.GetFirstWeapon.transform.position;
-            mover.RotateTowards(weaponPosition);
-            mover.Move(Mover.Foward);
+            Vector3 weaponPosition = PickableSensor.GetFirstWeapon.transform.position;
+            Mover.RotateTowards(weaponPosition);
+            Mover.Move(Mover.Foward);
         }
     }
 
     private void MoveTowardsMedkit()
     {
-        if (pickableSensor.GetFirstMedkit != null)
+        if (PickableSensor.GetFirstMedkit != null)
         {
-            Vector3 medkitPosition = pickableSensor.GetFirstMedkit.transform.position;
+            Vector3 medkitPosition = PickableSensor.GetFirstMedkit.transform.position;
 
-            if (Vector3.Distance(medkitPosition, mover.transform.position) > CLOSEST_DISTANCE_ALLOWED_MEDKIT || health.IsLowLife)
+            if (Vector3.Distance(medkitPosition, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED_MEDKIT || health.IsLowLife)
             {
-                mover.RotateTowards(medkitPosition);
-                mover.Move(Mover.Foward);
+                Mover.RotateTowards(medkitPosition);
+                Mover.Move(Mover.Foward);
             }
             else
                 state = State.SearchingEnnemy;
@@ -141,7 +141,7 @@ public class CamperStrategy : BaseStrategy
 
     private void SearchEnnemy()
     {
-        mover.Rotate(Mover.CLOCKWISE);
+        Mover.Rotate(Mover.CLOCKWISE);
     }
 
     private enum State

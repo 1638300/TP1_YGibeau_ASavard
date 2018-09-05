@@ -4,7 +4,7 @@ namespace Playmode.Movement
 {
     public class AnchoredMover : Mover
     {
-        private Transform _rootTransform;
+        private Transform rootTransform;
 
         private new void Awake()
         {
@@ -15,7 +15,7 @@ namespace Playmode.Movement
 
         private void InitializeComponent()
         {
-            _rootTransform = transform.root;
+            rootTransform = transform.root;
         }
 
         public override void Move(Vector3 direction)
@@ -26,7 +26,7 @@ namespace Playmode.Movement
         public override void Rotate(float direction)
         {
             transform.RotateAround(
-                _rootTransform.position,
+                rootTransform.position,
                 Vector3.forward,
                 (direction < 0 ? RotateSpeed : -RotateSpeed) * Time.deltaTime
             );
@@ -34,12 +34,12 @@ namespace Playmode.Movement
 
         public override void RotateTowards(Vector3 position)
         {
-            var directionToTarget = _rootTransform.position - position;
-            var angle = Vector3.Angle(_rootTransform.up, directionToTarget);
-            var direction = Vector3.Dot(directionToTarget, _rootTransform.right);
+            var directionToTarget = rootTransform.position - position;
+            var angle = Vector3.Angle(rootTransform.up, directionToTarget);
+            var direction = Vector3.Dot(directionToTarget, rootTransform.right);
             if (angle <= Time.deltaTime* RotateSpeed)
             {
-                transform.RotateAround(_rootTransform.position, Vector3.forward, (direction < 0 ? -1 : 1) * (Time.deltaTime * RotateSpeed));
+                transform.RotateAround(rootTransform.position, Vector3.forward, (direction < 0 ? -1 : 1) * (Time.deltaTime * RotateSpeed));
             }
            
         }

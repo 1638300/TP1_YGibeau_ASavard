@@ -7,8 +7,8 @@ namespace Playmode.Ennemy.BodyParts
 {
     public class HandController : MonoBehaviour
     {
-        private Mover _mover;
-        private WeaponController _weapon;
+        private Mover mover;
+        private WeaponController weapon;
 
         private void Awake()
         {
@@ -17,7 +17,7 @@ namespace Playmode.Ennemy.BodyParts
 
         private void InitializeComponent()
         {
-            _mover = GetComponent<AnchoredMover>();
+            mover = GetComponent<AnchoredMover>();
         }
         
         public void Hold(GameObject gameObject)
@@ -27,21 +27,21 @@ namespace Playmode.Ennemy.BodyParts
                 gameObject.transform.parent = transform;
                 gameObject.transform.localPosition = Vector3.zero;
                 
-                _weapon = gameObject.GetComponentInChildren<WeaponController>();
+                weapon = gameObject.GetComponentInChildren<WeaponController>();
             }
             else
             {
-                _weapon = null;
+                weapon = null;
             }
         }
         public void Hold(WeaponType newType)
         {
-           _weapon?.SetWeaponType(newType);
+           weapon?.SetWeaponType(newType);
         }
 
         public void Use()
         {
-           if (_weapon != null) _weapon.Shoot();
+           if (weapon != null) weapon.Shoot();
         }
      }
 }

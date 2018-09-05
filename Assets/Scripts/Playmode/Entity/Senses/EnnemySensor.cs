@@ -9,7 +9,7 @@ namespace Playmode.Entity.Senses
 
     public class EnnemySensor : MonoBehaviour
     {
-        private ICollection<EnnemyController> _ennemiesInSight;
+        private ICollection<EnnemyController> ennemiesInSight;
 
         public event EnnemySensorEventHandler OnEnnemySensed;
         public event EnnemySensorEventHandler OnEnnemyUnsensed;
@@ -18,7 +18,7 @@ namespace Playmode.Entity.Senses
         {
             get
             {
-                var ennemy = _ennemiesInSight.GetEnumerator();
+                var ennemy = ennemiesInSight.GetEnumerator();
                 ennemy.MoveNext();
                 return ennemy.Current;
             }
@@ -31,14 +31,14 @@ namespace Playmode.Entity.Senses
 
         private void InitializeComponent()
         {
-            _ennemiesInSight = new LinkedList<EnnemyController>();
+            ennemiesInSight = new LinkedList<EnnemyController>();
         }
 
         public void Sense(EnnemyController ennemy)
         {
-            if(!_ennemiesInSight.Contains(ennemy))
+            if(!ennemiesInSight.Contains(ennemy))
             {
-                _ennemiesInSight.Add(ennemy);
+                ennemiesInSight.Add(ennemy);
 
                 ennemy.GetComponent<Health>().OnDeath += OnDeath;
 
@@ -48,7 +48,7 @@ namespace Playmode.Entity.Senses
 
         public void Unsense(EnnemyController ennemy)
         {
-            _ennemiesInSight.Remove(ennemy);
+            ennemiesInSight.Remove(ennemy);
 
             ennemy.GetComponent<Health>().OnDeath -= OnDeath;
 
@@ -67,7 +67,7 @@ namespace Playmode.Entity.Senses
 
         private void OnDeath(EnnemyController ennemy)
         {
-            _ennemiesInSight.Remove(ennemy);
+            ennemiesInSight.Remove(ennemy);
             this.OnEnnemyUnsensed(ennemy);
         }
     }

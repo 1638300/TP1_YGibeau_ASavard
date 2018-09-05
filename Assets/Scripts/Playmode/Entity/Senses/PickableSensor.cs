@@ -8,18 +8,18 @@ namespace Playmode.Entity.Senses
 
     public class PickableSensor : MonoBehaviour
     {
-        private ICollection<PickableController> _pickablesInSight;
+        private ICollection<PickableController> pickablesInSight;
 
         public event PickableSensorEventHandler OnPickableSensed;
         public event PickableSensorEventHandler OnPickableUnsensed;
 
-        public IEnumerable<PickableController> PickablesInSight => _pickablesInSight;
+        public IEnumerable<PickableController> PickablesInSight => pickablesInSight;
 
         public PickableController GetFirstMedkit
         {
             get
             {
-                foreach (PickableController pickableController in _pickablesInSight)
+                foreach (PickableController pickableController in pickablesInSight)
                 {
                     if (pickableController.IsMedkit())
                     {
@@ -34,7 +34,7 @@ namespace Playmode.Entity.Senses
         {
             get
             {
-                foreach (PickableController pickableController in _pickablesInSight)
+                foreach (PickableController pickableController in pickablesInSight)
                 {
                     if (pickableController.IsWeapon())
                     {
@@ -52,12 +52,12 @@ namespace Playmode.Entity.Senses
 
         private void InitializeComponent()
         {
-            _pickablesInSight = new HashSet<PickableController>();
+            pickablesInSight = new HashSet<PickableController>();
         }
 
         private void OnDisable()
         {
-            foreach (PickableController pickableController in _pickablesInSight)
+            foreach (PickableController pickableController in pickablesInSight)
             {
                 pickableController.OnDestroy -= Unsense;
             }
@@ -65,7 +65,7 @@ namespace Playmode.Entity.Senses
 
         public void Sense(PickableController pickable)
         {
-            _pickablesInSight.Add(pickable);
+            pickablesInSight.Add(pickable);
 
             pickable.OnDestroy += Unsense;
 
@@ -74,7 +74,7 @@ namespace Playmode.Entity.Senses
 
         public void Unsense(PickableController pickable)
         {
-            _pickablesInSight.Remove(pickable);
+            pickablesInSight.Remove(pickable);
 
             NotifyPickableUnsensed(pickable);
         }

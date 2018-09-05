@@ -8,7 +8,7 @@ namespace Playmode.Ennemy.Strategies
 {
     public class NormalStrategy : BaseStrategy
     {
-        private bool _isEnnemySeen;
+        private bool isEnnemySeen;
         private const int CLOSEST_DISTANCE_ALLOWED = 3;
 
 
@@ -26,15 +26,15 @@ namespace Playmode.Ennemy.Strategies
 
         public override void Act()
         {
-            if (_isEnnemySeen)
+            if (isEnnemySeen)
             {
-                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
-                mover.RotateTowards(position);
-                if(Vector3.Distance(position, mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
+                Vector3 position = EnnemySensor.GetFirstEnnemy.transform.position;
+                Mover.RotateTowards(position);
+                if(Vector3.Distance(position, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
                 {
-                    mover.Move(Mover.Foward);
+                    Mover.Move(Mover.Foward);
                 }
-                handController.Use();
+                HandController.Use();
             }
             else
             {
@@ -44,14 +44,14 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnEnnemySensed(EnnemyController ennemy)
         {
-            _isEnnemySeen = true;
+            isEnnemySeen = true;
         }
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if(ennemySensor.GetFirstEnnemy == null)
+            if(EnnemySensor.GetFirstEnnemy == null)
             {
-                _isEnnemySeen = false;
+                isEnnemySeen = false;
             }
         }
 

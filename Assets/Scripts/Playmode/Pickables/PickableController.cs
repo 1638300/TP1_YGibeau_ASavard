@@ -14,14 +14,14 @@ namespace Playmode.Pickables
     public class PickableController : MonoBehaviour
     {
 
-        [Header("Type Images")] [SerializeField] private Sprite _medkitSprite;
-        [SerializeField] private Sprite _shotgunSprite;
-        [SerializeField] private Sprite _uziSprite;
-        [Header("Values")] [SerializeField] private int _hitpoints;
+        [Header("Type Images")] [SerializeField] private Sprite medkitSprite;
+        [SerializeField] private Sprite shotgunSprite;
+        [SerializeField] private Sprite uziSprite;
+        [Header("Values")] [SerializeField] private int hitpoints;
 
-        private EnnemySensor _ennemySensor;
-        private Destroyer _destroyer;
-        private PickableTypes _type;
+        private EnnemySensor ennemySensor;
+        private Destroyer destroyer;
+        private PickableTypes type;
         public event PickableControllerEventHandler OnDestroy;
 
         private void NotifyPickableDestroyed()
@@ -37,29 +37,29 @@ namespace Playmode.Pickables
 
         private void OnEnable()
         {
-            _ennemySensor.OnEnnemySensed += OnEnnemySensed;
+            ennemySensor.OnEnnemySensed += OnEnnemySensed;
          }
 
         private void OnDisable()
         {
-            _ennemySensor.OnEnnemySensed -= OnEnnemySensed;
+            ennemySensor.OnEnnemySensed -= OnEnnemySensed;
         }
 
         private void ValidateSerializeFields()
         {
-            if (_medkitSprite == null)
+            if (medkitSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Medkit is missing.");
-            if (_shotgunSprite == null)
+            if (shotgunSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Shotgun is missing.");
-            if (_uziSprite == null)
+            if (uziSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Uzi is missing.");
         }
 
         private void InitializeComponents()
         {
-            _destroyer = GetComponent<RootDestroyer>();
+            destroyer = GetComponent<RootDestroyer>();
             var rootTransform = transform.root;
-            _ennemySensor = rootTransform.GetComponent<EnnemySensor>();
+            ennemySensor = rootTransform.GetComponent<EnnemySensor>();
         }
 
         public void Configure(PickableTypes type)
@@ -67,50 +67,50 @@ namespace Playmode.Pickables
             switch (type)
             {
                 case PickableTypes.Medkit:
-                    transform.root.GetComponent<SpriteRenderer>().sprite = _medkitSprite;
-                    this._type = PickableTypes.Medkit;
+                    transform.root.GetComponent<SpriteRenderer>().sprite = medkitSprite;
+                    this.type = PickableTypes.Medkit;
                     break;
                 case PickableTypes.Shotgun:
-                    transform.root.GetComponent<SpriteRenderer>().sprite = _shotgunSprite;
-                    this._type = PickableTypes.Shotgun;
+                    transform.root.GetComponent<SpriteRenderer>().sprite = shotgunSprite;
+                    this.type = PickableTypes.Shotgun;
                     break;
                 case PickableTypes.Uzi:
-                    transform.root.GetComponent<SpriteRenderer>().sprite = _uziSprite;
-                    this._type = PickableTypes.Uzi;
+                    transform.root.GetComponent<SpriteRenderer>().sprite = uziSprite;
+                    this.type = PickableTypes.Uzi;
                     break;
             }
         }
 
         public void OnEnnemySensed(EnnemyController ennemy)
         {
-            switch (_type)
+            switch (type)
             {
                 case PickableTypes.Medkit:
-                    ennemy.Heal(_hitpoints);
+                    ennemy.Heal(hitpoints);
                     NotifyPickableDestroyed();
-                    _destroyer.Destroy();
+                    destroyer.Destroy();
                     break;
                 case PickableTypes.Shotgun:
                      ennemy.transform.root.GetComponentInChildren<HandController>().Hold(WeaponType.Shotgun);
                      NotifyPickableDestroyed();
-                     _destroyer.Destroy();
+                     destroyer.Destroy();
                     break;
                 case PickableTypes.Uzi:
                     ennemy.transform.root.GetComponentInChildren<HandController>().Hold(WeaponType.Uzi);
                     NotifyPickableDestroyed();
-                    _destroyer.Destroy();
+                    destroyer.Destroy();
                     break;
             }
         }
         
         public bool IsMedkit()
         {
-          return ((int)_type & (int)PickableTypes.Util) == (int)PickableTypes.Util;
+          return ((int)type & (int)PickableTypes.Util) == (int)PickableTypes.Util;
         }
 
         public bool IsWeapon()
         {
-          return ((int)_type & (int)PickableTypes.Weapon) == (int)PickableTypes.Weapon;
+          return ((int)type & (int)PickableTypes.Weapon) == (int)PickableTypes.Weapon;
         }
     }
 }

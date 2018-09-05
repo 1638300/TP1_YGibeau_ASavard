@@ -6,7 +6,7 @@ namespace Playmode.Entity.Senses
 {
     public class EnnemyStimulus : MonoBehaviour
     {
-        private EnnemyController _ennemy;
+        private EnnemyController ennemy;
 
         private void Awake()
         {
@@ -15,17 +15,17 @@ namespace Playmode.Entity.Senses
 
         private void InitializeComponent()
         {
-            _ennemy = transform.root.GetComponentInChildren<EnnemyController>();
+            ennemy = transform.root.GetComponentInChildren<EnnemyController>();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            other.GetComponent<EnnemySensor>()?.Sense(_ennemy);
+            other.GetComponent<EnnemySensor>()?.Sense(ennemy);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            other.GetComponent<EnnemySensor>()?.Unsense(_ennemy);
+            other.GetComponent<EnnemySensor>()?.Unsense(ennemy);
         }
     }
 }
