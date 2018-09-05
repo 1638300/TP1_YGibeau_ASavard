@@ -5,23 +5,23 @@ namespace Playmode.Util.Collections
 {
     public class LoopingEnumerator<T>
     {
-        private readonly IEnumerator<T> enumerator;
+        private readonly IEnumerator<T> _enumerator;
 
         public LoopingEnumerator(IEnumerable<T> enumerable)
         {
-            enumerator = enumerable.GetEnumerator();
+            _enumerator = enumerable.GetEnumerator();
 
-            if (!enumerator.MoveNext())
+            if (!_enumerator.MoveNext())
                 throw new ArgumentException("Can't do an infinite loop on an empty Enumerator.");
         }
 
         public T Next()
         {
-            var current = enumerator.Current;
-            if (!enumerator.MoveNext())
+            var current = _enumerator.Current;
+            if (!_enumerator.MoveNext())
             {
-                enumerator.Reset();
-                enumerator.MoveNext();
+                _enumerator.Reset();
+                _enumerator.MoveNext();
             }
             return current;
         }

@@ -8,18 +8,18 @@ namespace Playmode.Entity.Status
 
     public class Health : MonoBehaviour
     {
-        [SerializeField] private int healthPoints = 100;
+        [SerializeField] private int _healthPoints = 100;
 
         public event HealthEventHandler OnDeath;
 
         public int HealthPoints
         {
-            get { return healthPoints; }
+            get { return _healthPoints; }
             private set
             {
-                healthPoints = value < 0 ? 0 : value;
+                _healthPoints = value < 0 ? 0 : value;
 
-                if (healthPoints <= 0) NotifyDeath();
+                if (_healthPoints <= 0) NotifyDeath();
             }
         }
 
@@ -30,7 +30,7 @@ namespace Playmode.Entity.Status
 
         private void ValidateSerialisedFields()
         {
-            if (healthPoints < 0)
+            if (_healthPoints < 0)
                 throw new ArgumentException("HealthPoints can't be lower than 0.");
         }
 

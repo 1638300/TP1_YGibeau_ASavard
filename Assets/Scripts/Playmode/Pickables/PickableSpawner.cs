@@ -8,22 +8,21 @@ namespace Playmode.Pickables
 {
     public class PickableSpawner : MonoBehaviour
     {
-        private PickableController[] pickableControllers;
-        [SerializeField] private float SpawnDelay = 5;
-        private LoopingEnumerator<PickableTypes> typeProvider = new LoopingEnumerator<PickableTypes>(DefaultPickables);
-        private static readonly PickableTypes[] DefaultPickables =
+        private PickableController[] _pickableControllers;
+        [SerializeField] private float _spawnDelay = 5;
+        [SerializeField] private GameObject _pickablePrefab;
+        private readonly LoopingEnumerator<PickableTypes> _typeProvider = new LoopingEnumerator<PickableTypes>(_defaultPickables);
+        private static PickableTypes[] _defaultPickables =
         {
             PickableTypes.Medkit,
             PickableTypes.Shotgun,
             PickableTypes.Uzi
         };
 
-        [SerializeField] private GameObject pickablePrefab;
-
         private void Awake()
         {
             ValidateSerialisedFields();
-            pickableControllers = new PickableController[transform.childCount];
+            _pickableControllers = new PickableController[transform.childCount];
         }
 
         private void Start()
@@ -33,12 +32,12 @@ namespace Playmode.Pickables
 
         private void ValidateSerialisedFields()
         {
-            if (pickablePrefab == null)
+            if (_pickablePrefab == null)
                 throw new ArgumentException("Can't spawn null pickable prefab.");
             if (transform.childCount <= 0)
-                throw new ArgumentException("Can't spawn ennemis whitout spawn points. " +
-                                            "Create childrens for this GameObject as spawn points.");
-            if (SpawnDelay < 0.5f)
+                throw new ArgumentException("Can't spawn enemies without spawn points. " +
+                                            "Create children for this GameObject as spawn points.");
+            if (_spawnDelay < 0.5f)
                 throw new ArgumentException("The spawn delay must at least be of 0.5 seconds");
         }
 
@@ -47,28 +46,25 @@ namespace Playmode.Pickables
 
             for (var i = 0; i < transform.childCount; i++)
             { 
-                pickableControllers[i] = SpawnPickable(transform.GetChild(i).position,typeProvider.Next());
+                _pickableControllers[i] = SpawnPickable(transform.GetChild(i).position,_typeProvider.Next());
             }
         }
 
         private PickableController SpawnPickable(Vector3 position, PickableTypes type)
         {
-            Debug.Log("Spawn called");
-            var pickableController = Instantiate(pickablePrefab, position, Quaternion.identity).GetComponentInChildren<PickableController>();
+            var pickableController = Instantiate(_pickablePrefab, position, Quaternion.identity).GetComponentInChildren<PickableController>();
             pickableController.Configure(type);
-            pickableController.onDestroy += OnDestroyPickable;
+            pickableController.OnDestroy += OnDestroyPickable;
             return pickableController;
         }
 
         private void OnDestroyPickable(PickableController pickableController)
         {
-            Debug.Log("DestroyCalled");
-            for (int i = 0; i < pickableControllers.Length; i++)
+            for (int i = 0; i < _pickableControllers.Length; i++)
             {
-                if (pickableControllers[i] != null && pickableControllers[i].Equals(pickableController))
+                if (_pickableControllers[i] != null && _pickableControllers[i].Equals(pickableController))
                 {
-                    Debug.Log("DelayCalled");
-                    pickableControllers[i] = null;
+                    _pickableControllers[i] = null;
                     StartCoroutine(DelaySpawn(i));
                 }
             }
@@ -76,18 +72,17 @@ namespace Playmode.Pickables
 
         private IEnumerator DelaySpawn(int index)
         {
-            Debug.Log("DelayCalled");
-            yield return new WaitForSeconds(SpawnDelay);
+            yield return new WaitForSeconds(_spawnDelay);
             
-            pickableControllers[index] = SpawnPickable(transform.GetChild(index).position, typeProvider.Next());
+            _pickableControllers[index] = SpawnPickable(transform.GetChild(index).position, _typeProvider.Next());
         }
 
         private void OnDisable()
         {
-            for (int i = 0; i < pickableControllers.Length; i++)
+            for (int i = 0; i < _pickableControllers.Length; i++)
             {
-                if(pickableControllers[i] != null)
-                    pickableControllers[i].onDestroy -= OnDestroyPickable;
+                if(_pickableControllers[i] != null)
+                    _pickableControllers[i].OnDestroy -= OnDestroyPickable;
             }
         }
     }

@@ -2,9 +2,9 @@
 {
     public static class Tags
     {
-        public const string MainController = "MainController";
-        public const string Ennemy = "Ennemy";
-        public const string Pickable = "Pickable";
-        public const string WorldArea = "WorldArea";
+        public const string MAIN_CONTROLLER = "MainController";
+        public const string ENNEMY = "Ennemy";
+        public const string PICKABLE = "Pickable";
+        public const string WORLD_AREA = "WorldArea";
     }
 }

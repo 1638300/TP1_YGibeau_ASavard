@@ -7,7 +7,7 @@ namespace Playmode.Entity.Senses
 {
     public class PickableStimulus : MonoBehaviour
     {
-        private PickableController pickable;
+        private PickableController _pickable;
 
         private void Awake()
         {
@@ -16,12 +16,12 @@ namespace Playmode.Entity.Senses
 
         private void InitializeComponent()
         {
-            pickable = transform.root.GetComponent<PickableController>();
+            _pickable = transform.root.GetComponent<PickableController>();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            other.GetComponent<PickableSensor>()?.Sense(pickable);
+            other.GetComponent<PickableSensor>()?.Sense(_pickable);
         }
 
         

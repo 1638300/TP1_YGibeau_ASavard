@@ -9,8 +9,8 @@ namespace Playmode.Ennemy.Strategies
 {
     public class CowboyStrategy : BaseStrategy
     {
-        private const int closestDistanceAllowed = 3;
-        private State state = State.Seeking;
+        private const int CLOSEST_DISTANCE_ALLOWED = 3;
+        private State _state = State.Seeking;
 
         public CowboyStrategy(
                             Mover mover,
@@ -26,7 +26,7 @@ namespace Playmode.Ennemy.Strategies
 
         public override void Act()
         {
-            switch (state)
+            switch (_state)
             {
                 case State.Seeking:
                     base.Act();
@@ -44,65 +44,65 @@ namespace Playmode.Ennemy.Strategies
 
         protected override void OnEnnemySensed(EnnemyController ennemy)
         {
-            if (state == State.Seeking)
+            if (_state == State.Seeking)
             {
-                state = State.Shooting;
+                _state = State.Shooting;
             }
         }
 
         protected override void OnEnnemyUnsensed(EnnemyController ennemy)
         {
-            if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
+            if (_state == State.Shooting && EnnemySensor.GetFirstEnnemy == null)
             {
-                state = State.Seeking;
+                _state = State.Seeking;
             }
         }
 
         protected override void OnPickableSensed(PickableController pickable)
         {
-            if (state != State.PickingWeapon && pickable.IsWeapon())
+            if (_state != State.PickingWeapon && pickable.IsWeapon())
             {
-                state = State.PickingWeapon;
-                base.mover.ExtremeSpeedActivated();
+                _state = State.PickingWeapon;
+                base.Mover.ExtremeSpeedActivated();
             }
         }
 
         protected override void OnPickableUnsensed(PickableController pickable)
         {
-            if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon == null)
+            if (_state == State.PickingWeapon && base.PickableSensor.GetFirstWeapon == null)
             {
-                if (base.ennemySensor.GetFirstEnnemy == null)
+                if (base.EnnemySensor.GetFirstEnnemy == null)
                 {
-                    state = State.Seeking;
+                    _state = State.Seeking;
                 }
                 else
                 {
-                    state = State.Shooting;
+                    _state = State.Shooting;
                 }
             }
         }
 
         private void MoveAndShootTowardsEnnemy()
         {
-            if (ennemySensor.GetFirstEnnemy != null)
+            if (EnnemySensor.GetFirstEnnemy != null)
             {
-                Vector3 position = ennemySensor.GetFirstEnnemy.transform.position;
-                mover.RotateTowards(position);
-                if (Vector3.Distance(position, mover.transform.position) > closestDistanceAllowed)
+                Vector3 position = EnnemySensor.GetFirstEnnemy.transform.position;
+                Mover.RotateTowards(position);
+                if (Vector3.Distance(position, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
                 {
-                    mover.Move(Mover.Foward);
+                    Mover.Move(Mover.Foward);
                 }
-                handController.Use();
+                HandController.Use();
             }
         }
 
         private void MoveTowardsWeapon()
         {
-            if (pickableSensor.GetFirstWeapon != null)
+            if (PickableSensor.GetFirstWeapon != null)
             {
-                Vector3 position = pickableSensor.GetFirstWeapon.transform.position;
-                mover.RotateTowards(position);
-                mover.Move(Mover.Foward);
+                Vector3 position = PickableSensor.GetFirstWeapon.transform.position;
+                Mover.RotateTowards(position);
+                Mover.Move(Mover.Foward);
             }
         }
 

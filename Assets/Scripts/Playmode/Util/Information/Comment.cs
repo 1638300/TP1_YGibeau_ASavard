@@ -10,7 +10,7 @@ namespace Playmode.Util.Information
     public class Comment : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [SerializeField] private string text;
+        [SerializeField] private string _text;
 #endif
     }
 
@@ -20,17 +20,17 @@ namespace Playmode.Util.Information
     [CustomEditor(typeof(Comment))]
     public class CommentEditor : Editor
     {
-        private SerializedProperty text;
+        private SerializedProperty _text;
 
         private void OnEnable()
         {
-            text = serializedObject.FindProperty("text");
+            _text = serializedObject.FindProperty("text");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            text.stringValue = EditorGUILayout.TextArea(text.stringValue, GUILayout.MaxHeight(75));
+            _text.stringValue = EditorGUILayout.TextArea(_text.stringValue, GUILayout.MaxHeight(75));
             serializedObject.ApplyModifiedProperties();
         }
     }

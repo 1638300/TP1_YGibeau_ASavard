@@ -8,28 +8,28 @@ namespace Playmode.Weapon
     {
 
 
-        [Header("Behaviour")] [SerializeField] private GameObject bulletPrefab;
-        [SerializeField] protected float fireDelayInSeconds = 0.5f;
-        [SerializeField] private int uziDefaultDamage = 10;
-        [SerializeField] private float uziDefaultFireRate = 0.15f;
-        [SerializeField] private float uziBonusFireRate = 0.05f;
-        [SerializeField] private int shotgunDefaultDamage = 14;
-        [SerializeField] private int shotgunBonusDamage = 1;
-        [SerializeField] private float shotgunDefaultFireRate = 1.5f;
-        [SerializeField] private int shotgunNbBullets = 5;
-        [SerializeField] private int shotgunBulletSpacing = 20;
-        [SerializeField] private int shotgunBulletSpreading = 40;
+        [Header("Behaviour")] [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] protected float FireDelayInSeconds = 0.5f;
+        [SerializeField] private int _uziDefaultDamage = 10;
+        [SerializeField] private float _uziDefaultFireRate = 0.15f;
+        [SerializeField] private float _uziBonusFireRate = 0.05f;
+        [SerializeField] private int _shotgunDefaultDamage = 14;
+        [SerializeField] private int _shotgunBonusDamage = 1;
+        [SerializeField] private float _shotgunDefaultFireRate = 1.5f;
+        [SerializeField] private int _shotgunNbBullets = 5;
+        [SerializeField] private int _shotgunBulletSpacing = 20;
+        [SerializeField] private int _shotgunBulletSpreading = 40;
         
-        private float lastTimeShotInSeconds;
-        private float fireDelayBonus = 0;
+        private float _lastTimeShotInSeconds;
+        private float _fireDelayBonus = 0;
 
-        private bool CanShoot => Time.time - lastTimeShotInSeconds > fireDelayInSeconds;
+        private bool CanShoot => Time.time - _lastTimeShotInSeconds > FireDelayInSeconds;
 
-        [SerializeField] private int damage = 10;
+        [SerializeField] private int _damage = 10;
 
-        private int bonusDamage = 0;
+        private int _bonusDamage = 0;
 
-        private WeaponType weaponType = WeaponType.Default;
+        private WeaponType _weaponType = WeaponType.Default;
 
         private void Awake()
         {
@@ -39,64 +39,64 @@ namespace Playmode.Weapon
 
         private void ValidateSerialisedFields()
         {
-            if (fireDelayInSeconds < 0)
+            if (FireDelayInSeconds < 0)
                 throw new ArgumentException("FireRate can't be lower than 0.");
         }
 
         private void InitializeComponent()
         {
-            lastTimeShotInSeconds = 0;
+            _lastTimeShotInSeconds = 0;
         }
 
         public void Shoot()
         {
             if (CanShoot)
             {
-                if (weaponType == WeaponType.Shotgun)
+                if (_weaponType == WeaponType.Shotgun)
                 {
-                    for (int i = 0; i < shotgunNbBullets; i++)
+                    for (int i = 0; i < _shotgunNbBullets; i++)
                     {
-                        var bulletObject = Instantiate(bulletPrefab, transform.position, transform.rotation);
-                        bulletObject.transform.GetComponentInChildren<BulletController>().Damage = damage;
-                        bulletObject.transform.Rotate(Vector3.forward, (shotgunBulletSpacing * i - shotgunBulletSpreading));
+                        var bulletObject = Instantiate(_bulletPrefab, transform.position, transform.rotation);
+                        bulletObject.transform.GetComponentInChildren<BulletController>().Damage = _damage;
+                        bulletObject.transform.Rotate(Vector3.forward, (_shotgunBulletSpacing * i - _shotgunBulletSpreading));
                     }
                 }
                 else
-                   Instantiate(bulletPrefab, transform.position, transform.rotation).transform.GetComponentInChildren<BulletController>().Damage = damage;
+                   Instantiate(_bulletPrefab, transform.position, transform.rotation).transform.GetComponentInChildren<BulletController>().Damage = _damage;
 
-                lastTimeShotInSeconds = Time.time;
+                _lastTimeShotInSeconds = Time.time;
             }
         }
 
         public void SetWeaponType(WeaponType type)
         {        
-          if (weaponType == WeaponType.Default)
+          if (_weaponType == WeaponType.Default)
           {
               if (type == WeaponType.Shotgun)
               {
-                  damage = shotgunDefaultDamage;
-                  fireDelayInSeconds = shotgunDefaultFireRate;
+                  _damage = _shotgunDefaultDamage;
+                  FireDelayInSeconds = _shotgunDefaultFireRate;
               }
               else
               {
-                  damage = uziDefaultDamage;
-                  fireDelayInSeconds = uziDefaultFireRate;
+                  _damage = _uziDefaultDamage;
+                  FireDelayInSeconds = _uziDefaultFireRate;
               }
           }
           else if (type == WeaponType.Shotgun)
           {
-             bonusDamage += shotgunBonusDamage;
-             damage = shotgunDefaultDamage + bonusDamage;
-             fireDelayInSeconds = shotgunDefaultFireRate - fireDelayBonus;
+             _bonusDamage += _shotgunBonusDamage;
+             _damage = _shotgunDefaultDamage + _bonusDamage;
+             FireDelayInSeconds = _shotgunDefaultFireRate - _fireDelayBonus;
           }
           else
           {
-             fireDelayBonus += uziBonusFireRate;
-             damage = uziDefaultDamage + bonusDamage;
-             fireDelayInSeconds = uziDefaultFireRate - fireDelayBonus;
+             _fireDelayBonus += _uziBonusFireRate;
+             _damage = _uziDefaultDamage + _bonusDamage;
+             FireDelayInSeconds = _uziDefaultFireRate - _fireDelayBonus;
 
           }
-          weaponType = type;  
+          _weaponType = type;  
         }
     }
     public enum WeaponType

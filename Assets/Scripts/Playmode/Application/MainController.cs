@@ -24,16 +24,16 @@ namespace Playmode.Application
 
         private static IEnumerator LoadGameSceneRoutine()
         {
-            if (!SceneManager.GetSceneByName(Scenes.Game).isLoaded)
-                yield return SceneManager.LoadSceneAsync(Scenes.Game, LoadSceneMode.Additive);
+            if (!SceneManager.GetSceneByName(Scenes.GAME).isLoaded)
+                yield return SceneManager.LoadSceneAsync(Scenes.GAME, LoadSceneMode.Additive);
 
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(Scenes.Game));
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(Scenes.GAME));
         }
 
         private static IEnumerator UnloadGameSceneRoutine()
         {
-            if (SceneManager.GetSceneByName(Scenes.Game).isLoaded)
-                yield return SceneManager.UnloadSceneAsync(Scenes.Game);
+            if (SceneManager.GetSceneByName(Scenes.GAME).isLoaded)
+                yield return SceneManager.UnloadSceneAsync(Scenes.GAME);
         }
 
         private static IEnumerator ReloadGameSceneRoutine()

@@ -319,8 +319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf3221db0a6417bb514b57e3c5c5818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  rotateSpeed: 90
+  Speed: 1
+  RotateSpeed: 90
 --- !u!114 &114365648383534028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -332,8 +332,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86b820faf84451fa53dba772fca7f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  rotateSpeed: 90
+  Speed: 1
+  RotateSpeed: 90
 --- !u!114 &114434491710286188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -345,19 +345,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af86d34110fc4921bccbcde6ec3f8096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 1880469799408478}
-  hand: {fileID: 1201874307975926}
-  sight: {fileID: 1699645007186046}
-  typeSign: {fileID: 1477704372853126}
-  normalSprite: {fileID: 21300000, guid: 57a9bbaf00b6f7f41826c6cfdb727a7c, type: 3}
-  carefulSprite: {fileID: 21300000, guid: 59cbaa9177c078b44b276b554d1b1b8c, type: 3}
-  cowboySprite: {fileID: 21300000, guid: da442e3b6c1ce4f4487a3c003f766013, type: 3}
-  camperSprite: {fileID: 21300000, guid: 040104bd0166bd249a913acb61cce9b3, type: 3}
-  startingWeaponPrefab: {fileID: 1627777849954234, guid: 88870865f059b0541aa68eb83ffb79d2,
+  _body: {fileID: 1880469799408478}
+  _hand: {fileID: 1201874307975926}
+  _sight: {fileID: 1699645007186046}
+  _typeSign: {fileID: 1477704372853126}
+  _normalSprite: {fileID: 21300000, guid: 57a9bbaf00b6f7f41826c6cfdb727a7c, type: 3}
+  _carefulSprite: {fileID: 21300000, guid: 59cbaa9177c078b44b276b554d1b1b8c, type: 3}
+  _cowboySprite: {fileID: 21300000, guid: da442e3b6c1ce4f4487a3c003f766013, type: 3}
+  _camperSprite: {fileID: 21300000, guid: 040104bd0166bd249a913acb61cce9b3, type: 3}
+  _startingWeaponPrefab: {fileID: 1627777849954234, guid: 88870865f059b0541aa68eb83ffb79d2,
     type: 2}
-  lowLifeThreshold: 30
-  frontWorldSensor: {fileID: 114887184881976332}
-  backWorldSensor: {fileID: 114697873694525012}
+  _lowLifeThreshold: 50
+  _frontWorldSensor: {fileID: 0}
+  _backWorldSensor: {fileID: 0}
 --- !u!114 &114574195830500936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e243a522a9634089beb34b0ceb4d40dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints: 200
+  _healthPoints: 100
 --- !u!114 &114785109227199278
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -425,8 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc970fc2eaef4814a47dd9c254c32e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: "Ce RigidBody2D est n\xE9cessaire pour que les \r\ntriggers se d\xE9clanchent
-    m\xEAme s'ils sont en\r\nmouvement."
+  _text: 
 --- !u!114 &114842752972343190
 MonoBehaviour:
   m_ObjectHideFlags: 1

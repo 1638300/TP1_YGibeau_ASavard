@@ -7,13 +7,13 @@ namespace Playmode.Bullet
 {
     public class BulletController : MonoBehaviour
     {
-        [Header("Behaviour")] [SerializeField] private float lifeSpanInSeconds = 5f;
+        [Header("Behaviour")] [SerializeField] private float _lifeSpanInSeconds = 5f;
 
-        private Mover mover;
-        private Destroyer destroyer;
-        private float timeSinceSpawnedInSeconds;
+        private Mover _mover;
+        private Destroyer _destroyer;
+        private float _timeSinceSpawnedInSeconds;
 
-        private bool IsAlive => timeSinceSpawnedInSeconds < lifeSpanInSeconds;
+        private bool IsAlive => _timeSinceSpawnedInSeconds < _lifeSpanInSeconds;
         public int Damage { get; set; } = 1;
 
         private void Awake()
@@ -24,16 +24,16 @@ namespace Playmode.Bullet
 
         private void ValidateSerialisedFields()
         {
-            if (lifeSpanInSeconds < 0)
+            if (_lifeSpanInSeconds < 0)
                 throw new ArgumentException("LifeSpan can't be lower than 0.");
         }
 
         private void InitialzeComponent()
         {
-            mover = GetComponent<RootMover>();
-            destroyer = GetComponent<RootDestroyer>();
+            _mover = GetComponent<RootMover>();
+            _destroyer = GetComponent<RootDestroyer>();
 
-            timeSinceSpawnedInSeconds = 0;
+            _timeSinceSpawnedInSeconds = 0;
         }
 
         private void Update()
@@ -45,15 +45,15 @@ namespace Playmode.Bullet
 
         private void UpdateLifeSpan()
         {
-            timeSinceSpawnedInSeconds += Time.deltaTime;
+            _timeSinceSpawnedInSeconds += Time.deltaTime;
         }
 
         private void Act()
         {
             if (IsAlive)
-                mover.Move(Mover.Foward);
+                _mover.Move(Mover.Foward);
             else
-                destroyer.Destroy();
+                _destroyer.Destroy();
         }
 
     }

@@ -4,7 +4,7 @@ namespace Playmode.Movement
 {
     public class AnchoredMover : Mover
     {
-        private Transform rootTransform;
+        private Transform _rootTransform;
 
         private new void Awake()
         {
@@ -15,31 +15,31 @@ namespace Playmode.Movement
 
         private void InitializeComponent()
         {
-            rootTransform = transform.root;
+            _rootTransform = transform.root;
         }
 
         public override void Move(Vector3 direction)
         {
-            transform.Translate(direction.normalized * speed * Time.deltaTime);
+            transform.Translate(direction.normalized * Speed * Time.deltaTime);
         }
 
         public override void Rotate(float direction)
         {
             transform.RotateAround(
-                rootTransform.position,
+                _rootTransform.position,
                 Vector3.forward,
-                (direction < 0 ? rotateSpeed : -rotateSpeed) * Time.deltaTime
+                (direction < 0 ? RotateSpeed : -RotateSpeed) * Time.deltaTime
             );
         }
 
         public override void RotateTowards(Vector3 position)
         {
-            var directionToTarget = rootTransform.position - position;
-            var angle = Vector3.Angle(rootTransform.up, directionToTarget);
-            var direction = Vector3.Dot(directionToTarget, rootTransform.right);
-            if (angle <= Time.deltaTime* rotateSpeed)
+            var directionToTarget = _rootTransform.position - position;
+            var angle = Vector3.Angle(_rootTransform.up, directionToTarget);
+            var direction = Vector3.Dot(directionToTarget, _rootTransform.right);
+            if (angle <= Time.deltaTime* RotateSpeed)
             {
-                transform.RotateAround(rootTransform.position, Vector3.forward, (direction < 0 ? -1 : 1) * (Time.deltaTime * rotateSpeed));
+                transform.RotateAround(_rootTransform.position, Vector3.forward, (direction < 0 ? -1 : 1) * (Time.deltaTime * RotateSpeed));
             }
            
         }

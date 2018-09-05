@@ -2,7 +2,7 @@
 {
     public static class Scenes
     {
-        public const string Main = "Main";
-        public const string Game = "Game";
+        public const string MAIN = "Main";
+        public const string GAME = "Game";
     }
 }

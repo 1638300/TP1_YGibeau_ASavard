@@ -21,8 +21,8 @@ namespace Playmode.Ennemy
             EnnemyStrategy.Camper
         };
 
-        [SerializeField] private GameObject ennemyPrefab;
-        [SerializeField] private Color[] colors = DefaultColors;
+        [SerializeField] private GameObject _ennemyPrefab;
+        [SerializeField] private Color[] _colors = DefaultColors;
 
         private void Awake()
         {
@@ -36,9 +36,9 @@ namespace Playmode.Ennemy
 
         private void ValidateSerialisedFields()
         {
-            if (ennemyPrefab == null)
+            if (_ennemyPrefab == null)
                 throw new ArgumentException("Can't spawn null ennemy prefab.");
-            if (colors == null || colors.Length == 0)
+            if (_colors == null || _colors.Length == 0)
                 throw new ArgumentException("Ennemies needs colors to be spawned.");
             if (transform.childCount <= 0)
                 throw new ArgumentException("Can't spawn ennemis whitout spawn points. " +
@@ -48,7 +48,7 @@ namespace Playmode.Ennemy
         private void SpawnEnnemies()
         {
             var stragegyProvider = new LoopingEnumerator<EnnemyStrategy>(DefaultStrategies);
-            var colorProvider = new LoopingEnumerator<Color>(colors);
+            var colorProvider = new LoopingEnumerator<Color>(_colors);
 
             for (var i = 0; i < transform.childCount; i++)
                 SpawnEnnemy(
@@ -60,7 +60,7 @@ namespace Playmode.Ennemy
 
         private void SpawnEnnemy(Vector3 position, EnnemyStrategy strategy, Color color)
         {
-            Instantiate(ennemyPrefab, position, Quaternion.identity)
+            Instantiate(_ennemyPrefab, position, Quaternion.identity)
                 .GetComponentInChildren<EnnemyController>()
                 .Configure(strategy, color);
         }

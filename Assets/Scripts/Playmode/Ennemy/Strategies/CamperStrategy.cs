@@ -8,36 +8,30 @@ using UnityEngine;
 
 public class CamperStrategy : BaseStrategy
 {
-    private const float closestDistanceAllowedMedkit = 3.0f;
-    private State state = State.Seeking;
-    private bool isLowLife = false;
+    private const float CLOSEST_DISTANCE_ALLOWED_MEDKIT = 3.0f;
 
-    private EnnemyController ennemyController;
+    private EnnemyController _ennemyController;
+    private bool _isLowLife;
+    private State _state = State.Seeking;
 
     public CamperStrategy(
-                            Mover mover, 
-                            HandController handController, 
-                            WorldSensor frontWorldSensor,
-                            WorldSensor backWorldSensor,
-                            EnnemySensor ennemySensor,
-                            PickableSensor pickableSensor,
-                            EnnemyController ennemyController) 
+        Mover mover,
+        HandController handController,
+        WorldSensor frontWorldSensor,
+        WorldSensor backWorldSensor,
+        EnnemySensor ennemySensor,
+        PickableSensor pickableSensor,
+        EnnemyController ennemyController)
         : base(mover, handController, frontWorldSensor, backWorldSensor, ennemySensor, pickableSensor)
     {
-        this.ennemyController = ennemyController;
+        this._ennemyController = ennemyController;
         ennemyController.OnLowLife += OnLowLife;
         ennemyController.OnNormalLife += OnNormalLife;
     }
 
-    ~CamperStrategy()
-    {
-        ennemyController.OnLowLife -= OnLowLife;
-        ennemyController.OnNormalLife -= OnNormalLife;
-    }
-
     public override void Act()
     {
-        switch (state)
+        switch (_state)
         {
             case State.Seeking:
                 base.Act();
@@ -59,102 +53,93 @@ public class CamperStrategy : BaseStrategy
 
     protected override void OnEnnemySensed(EnnemyController ennemy)
     {
-        if (state == State.SearchingEnnemy)
-        {
-            state = State.Shooting;
-        }
+        if (_state == State.SearchingEnnemy) _state = State.Shooting;
     }
 
     protected override void OnEnnemyUnsensed(EnnemyController ennemy)
     {
-        if (state == State.Shooting && ennemySensor.GetFirstEnnemy == null)
-        {
-            state = State.SearchingEnnemy;
-        }
+        if (_state == State.Shooting && EnnemySensor.GetFirstEnnemy == null) _state = State.SearchingEnnemy;
     }
 
     protected override void OnPickableSensed(PickableController pickable)
     {
-        if (state == State.Seeking && pickable.IsWeapon())
-        {
-            state = State.PickingWeapon;
-        }
-        else if(pickable.IsMedkit() && state != State.PickingMedkit && state != State.SearchingEnnemy && state != State.Shooting)
-        {
-            state = State.PickingMedkit;
-        }
+        if (_state == State.Seeking && pickable.IsWeapon())
+            _state = State.PickingWeapon;
+        else if (pickable.IsMedkit() && _state != State.PickingMedkit && _state != State.SearchingEnnemy &&
+                 _state != State.Shooting) _state = State.PickingMedkit;
     }
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
-        if (state != State.Seeking && state != State.PickingWeapon && base.pickableSensor.GetFirstMedkit == null)
+        if (_state != State.Seeking && _state != State.PickingWeapon && PickableSensor.GetFirstMedkit == null)
         {
-            if (base.pickableSensor.GetFirstWeapon == null)
-                state = State.Seeking;
+            if (PickableSensor.GetFirstWeapon == null)
+                _state = State.Seeking;
             else
-                state = State.PickingWeapon;
+                _state = State.PickingWeapon;
         }
-        else if (state == State.PickingWeapon && base.pickableSensor.GetFirstWeapon == null)
+        else if (_state == State.PickingWeapon && PickableSensor.GetFirstWeapon == null)
         {
-            state = State.Seeking;
+            _state = State.Seeking;
         }
     }
 
     private void OnLowLife()
     {
-        isLowLife = true;
-        if (base.pickableSensor.GetFirstMedkit != null)
-        {
-            state = State.PickingMedkit;
-        }
+        _isLowLife = true;
+        if (PickableSensor.GetFirstMedkit != null) _state = State.PickingMedkit;
     }
 
     private void OnNormalLife()
     {
-        isLowLife = false;
+        _isLowLife = false;
     }
 
     private void ShootTowardsEnnemy()
     {
-        if (ennemySensor.GetFirstEnnemy != null)
+        if (EnnemySensor.GetFirstEnnemy != null)
         {
-            Vector3 ennemyPosition = ennemySensor.GetFirstEnnemy.transform.position;
-            mover.RotateTowards(ennemyPosition);
-            handController.Use();
+            var ennemyPosition = EnnemySensor.GetFirstEnnemy.transform.position;
+            Mover.RotateTowards(ennemyPosition);
+            HandController.Use();
         }
     }
 
     private void MoveTowardsWeapon()
     {
-        if (pickableSensor.GetFirstWeapon != null)
+        if (PickableSensor.GetFirstWeapon != null)
         {
-            Vector3 weaponPosition = pickableSensor.GetFirstWeapon.transform.position;
-            mover.RotateTowards(weaponPosition);
-            mover.Move(Mover.Foward);
+            var weaponPosition = PickableSensor.GetFirstWeapon.transform.position;
+            Mover.RotateTowards(weaponPosition);
+            Mover.Move(Mover.Foward);
         }
     }
 
     private void MoveTowardsMedkit()
     {
-        if (pickableSensor.GetFirstMedkit != null)
+        if (PickableSensor.GetFirstMedkit != null)
         {
-            Vector3 medkitPosition = pickableSensor.GetFirstMedkit.transform.position;
+            var medkitPosition = PickableSensor.GetFirstMedkit.transform.position;
 
-            if (Vector3.Distance(medkitPosition, mover.transform.position) > closestDistanceAllowedMedkit || isLowLife)
+            if (Vector3.Distance(medkitPosition, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED_MEDKIT || _isLowLife)
             {
-                mover.RotateTowards(medkitPosition);
-                mover.Move(Mover.Foward);
+                Mover.RotateTowards(medkitPosition);
+                Mover.Move(Mover.Foward);
             }
             else
-                state = State.SearchingEnnemy;
+            {
+                _state = State.SearchingEnnemy;
+            }
         }
         else
-            state = State.Seeking;
+        {
+            _state = State.Seeking;
+        }
     }
 
     private void SearchEnnemy()
     {
-        mover.Rotate(Mover.Clockwise);
+        Mover.Rotate(Mover.CLOCKWISE);
     }
 
     private enum State

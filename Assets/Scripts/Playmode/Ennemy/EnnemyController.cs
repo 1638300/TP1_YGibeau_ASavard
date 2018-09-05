@@ -13,41 +13,41 @@ namespace Playmode.Ennemy
 
     public class EnnemyController : MonoBehaviour
     {
-        [Header("Body Parts")] [SerializeField] private GameObject body;
-        [SerializeField] private GameObject hand;
-        [SerializeField] private GameObject sight;
-        [SerializeField] private GameObject typeSign;
-        [Header("Type Images")] [SerializeField] private Sprite normalSprite;
-        [SerializeField] private Sprite carefulSprite;
-        [SerializeField] private Sprite cowboySprite;
-        [SerializeField] private Sprite camperSprite;
-        [Header("Behaviour")] [SerializeField] private GameObject startingWeaponPrefab;
-        [SerializeField] private int lowLifeThreshold;
-        [SerializeField] private WorldSensor frontWorldSensor;
-        [SerializeField] private WorldSensor backWorldSensor;
+        [Header("Body Parts")] [SerializeField] private GameObject _body;
+        [SerializeField] private GameObject _hand;
+        [SerializeField] private GameObject _sight;
+        [SerializeField] private GameObject _typeSign;
+        [Header("Type Images")] [SerializeField] private Sprite _normalSprite;
+        [SerializeField] private Sprite _carefulSprite;
+        [SerializeField] private Sprite _cowboySprite;
+        [SerializeField] private Sprite _camperSprite;
+        [Header("Behaviour")] [SerializeField] private GameObject _startingWeaponPrefab;
+        [SerializeField] private int _lowLifeThreshold;
+        [SerializeField] private WorldSensor _frontWorldSensor;
+        [SerializeField] private WorldSensor _backWorldSensor;
 
         public event LowLifeEventHandler OnLowLife;
         public event LowLifeEventHandler OnNormalLife;
 
-        private Health health;
-        private Mover mover;
-        private Destroyer destroyer;
-        private EnnemySensor ennemySensor;
-        private PickableSensor pickableSensor;
-        private HitSensor hitSensor;
-        private HandController handController;
-        private IEnnemyStrategy strategy;
-        private bool isLowLife;
+        private Health _health;
+        private Mover _mover;
+        private Destroyer _destroyer;
+        private EnnemySensor _ennemySensor;
+        private PickableSensor _pickableSensor;
+        private HitSensor _hitSensor;
+        private HandController _handController;
+        private IEnnemyStrategy _strategy;
+        private bool _isLowLife;
         
         public bool IsLowLife
         {
             get
             {
-                return isLowLife;
+                return _isLowLife;
             }
             private set
             {
-                isLowLife = value;
+                _isLowLife = value;
             }
         }
 
@@ -60,43 +60,43 @@ namespace Playmode.Ennemy
 
         private void ValidateSerialisedFields()
         {
-            if (body == null)
+            if (_body == null)
                 throw new ArgumentException("Body parts must be provided. Body is missing.");
-            if (hand == null)
+            if (_hand == null)
                 throw new ArgumentException("Body parts must be provided. Hand is missing.");
-            if (sight == null)
+            if (_sight == null)
                 throw new ArgumentException("Body parts must be provided. Sight is missing.");
-            if (typeSign == null)
+            if (_typeSign == null)
                 throw new ArgumentException("Body parts must be provided. TypeSign is missing.");
-            if (normalSprite == null)
+            if (_normalSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Normal is missing.");
-            if (carefulSprite == null)
+            if (_carefulSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Careful is missing.");
-            if (cowboySprite == null)
+            if (_cowboySprite == null)
                 throw new ArgumentException("Type sprites must be provided. Cowboy is missing.");
-            if (camperSprite == null)
+            if (_camperSprite == null)
                 throw new ArgumentException("Type sprites must be provided. Camper is missing.");
-            if (startingWeaponPrefab == null)
+            if (_startingWeaponPrefab == null)
                 throw new ArgumentException("StartingWeapon prefab must be provided.");
         }
 
         private void InitializeComponent()
         {
-            health = GetComponent<Health>();
-            mover = GetComponent<RootMover>();
-            destroyer = GetComponent<RootDestroyer>();
+            _health = GetComponent<Health>();
+            _mover = GetComponent<RootMover>();
+            _destroyer = GetComponent<RootDestroyer>();
 
             var rootTransform = transform.root;
-            ennemySensor = rootTransform.GetComponentInChildren<EnnemySensor>();
-            pickableSensor = rootTransform.GetComponentInChildren<PickableSensor>();
-            hitSensor = rootTransform.GetComponentInChildren<HitSensor>();
-            handController = hand.GetComponent<HandController>();
+            _ennemySensor = rootTransform.GetComponentInChildren<EnnemySensor>();
+            _pickableSensor = rootTransform.GetComponentInChildren<PickableSensor>();
+            _hitSensor = rootTransform.GetComponentInChildren<HitSensor>();
+            _handController = _hand.GetComponent<HandController>();
         }
 
         private void CreateStartingWeapon()
         {
-            handController.Hold(Instantiate(
-                startingWeaponPrefab,
+            _handController.Hold(Instantiate(
+                _startingWeaponPrefab,
                 Vector3.zero,
                 Quaternion.identity
             ));
@@ -104,69 +104,69 @@ namespace Playmode.Ennemy
 
         private void OnEnable()
         {
-            hitSensor.OnHit += OnHit;
-            health.OnDeath += OnDeath;
+            _hitSensor.OnHit += OnHit;
+            _health.OnDeath += OnDeath;
         }
 
         private void Update()
         {
-            strategy.Act();
+            _strategy.Act();
         }
 
         private void OnDisable()
         {
-            hitSensor.OnHit -= OnHit;
-            health.OnDeath -= OnDeath;
+            _hitSensor.OnHit -= OnHit;
+            _health.OnDeath -= OnDeath;
         }
 
         public void Configure(EnnemyStrategy strategy, Color color)
         {
-            body.GetComponent<SpriteRenderer>().color = color;
-            sight.GetComponent<SpriteRenderer>().color = color;
+            _body.GetComponent<SpriteRenderer>().color = color;
+            _sight.GetComponent<SpriteRenderer>().color = color;
             
             switch (strategy)
             {
                 case EnnemyStrategy.Careful:
-                    typeSign.GetComponent<SpriteRenderer>().sprite = carefulSprite;
-                    this.strategy = new CarefulStrategy(
-                                                        mover, 
-                                                        handController, 
-                                                        frontWorldSensor, 
-                                                        backWorldSensor, 
-                                                        ennemySensor, 
-                                                        pickableSensor, 
+                    _typeSign.GetComponent<SpriteRenderer>().sprite = _carefulSprite;
+                    this._strategy = new CarefulStrategy(
+                                                        _mover, 
+                                                        _handController, 
+                                                        _frontWorldSensor, 
+                                                        _backWorldSensor, 
+                                                        _ennemySensor, 
+                                                        _pickableSensor, 
                                                         this);
                     break;
                 case EnnemyStrategy.Cowboy:
-                    typeSign.GetComponent<SpriteRenderer>().sprite = cowboySprite;
-                    this.strategy = new CowboyStrategy(
-                                                        mover,
-                                                        handController,
-                                                        frontWorldSensor,
-                                                        backWorldSensor,
-                                                        ennemySensor,
-                                                        pickableSensor);
+                    _typeSign.GetComponent<SpriteRenderer>().sprite = _cowboySprite;
+                    this._strategy = new CowboyStrategy(
+                                                        _mover,
+                                                        _handController,
+                                                        _frontWorldSensor,
+                                                        _backWorldSensor,
+                                                        _ennemySensor,
+                                                        _pickableSensor);
                     break;
                 case EnnemyStrategy.Camper:
-                    typeSign.GetComponent<SpriteRenderer>().sprite = camperSprite;
-                    this.strategy = new CamperStrategy(
-                                                        mover,
-                                                        handController,
-                                                        frontWorldSensor,
-                                                        backWorldSensor,
-                                                        ennemySensor,
-                                                        pickableSensor,
+                    _typeSign.GetComponent<SpriteRenderer>().sprite = _camperSprite;
+                    this._strategy = new CamperStrategy(
+                                                        _mover,
+                                                        _handController,
+                                                        _frontWorldSensor,
+                                                        _backWorldSensor,
+                                                        _ennemySensor,
+                                                        _pickableSensor,
                                                         this);
                     break;
                 default:
-                    typeSign.GetComponent<SpriteRenderer>().sprite = normalSprite;
-                    this.strategy = new NormalStrategy(
-                                                        mover,
-                                                        handController,
-                                                        frontWorldSensor,
-                                                        backWorldSensor,
-                                                        ennemySensor,
-                                                        pickableSensor);
+                    _typeSign.GetComponent<SpriteRenderer>().sprite = _normalSprite;
+                    this._strategy = new NormalStrategy(
+                                                        _mover,
+                                                        _handController,
+                                                        _frontWorldSensor,
+                                                        _backWorldSensor,
+                                                        _ennemySensor,
+                                                        _pickableSensor);
                     break;
             }
         }
@@ -183,8 +183,8 @@ namespace Playmode.Ennemy
 
         public void Heal(int hitpoints)
         {
-            health.Heal(hitpoints);
-            if (health.HealthPoints > lowLifeThreshold)
+            _health.Heal(hitpoints);
+            if (_health.HealthPoints > _lowLifeThreshold)
             {
                 IsLowLife = false;
                 NotifyNormalLife();
@@ -193,8 +193,8 @@ namespace Playmode.Ennemy
 
         private void OnHit(int hitPoints)
         {
-            health.Hit(hitPoints);
-            if(health.HealthPoints < lowLifeThreshold)
+            _health.Hit(hitPoints);
+            if(_health.HealthPoints < _lowLifeThreshold)
             {
                 IsLowLife = true;
                 NotifyLowLife();
@@ -203,9 +203,7 @@ namespace Playmode.Ennemy
 
         private void OnDeath(EnnemyController ennemy)
         {
-            Debug.Log("Yaaaaarggg....!! I died....GG.");
-
-            destroyer.Destroy();
+            _destroyer.Destroy();
         }
     }
 }
