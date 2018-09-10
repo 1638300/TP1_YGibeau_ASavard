@@ -105,6 +105,7 @@ namespace Playmode.Pickables
             }
         }
         
+        //BEN_REVIEW : Vous l'avez fait ? Vous m'en voyez surpris...
         public bool IsMedkit()
         {
           return ((int)type & (int)PickableTypes.Util) == (int)PickableTypes.Util;

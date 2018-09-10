@@ -72,7 +72,11 @@ public class CamperStrategy : BaseStrategy
         {
             state = State.PickingWeapon;
         }
-        else if(pickable.IsMedkit() && state != State.PickingMedkit && state != State.SearchingEnnemy && state != State.Shooting)
+        //BEN_REVIEW : Longue condition aurait vraiment mérité être sortie dans une méthode.
+        else if(pickable.IsMedkit() && 
+                state != State.PickingMedkit && 
+                state != State.SearchingEnnemy && 
+                state != State.Shooting)
         {
             state = State.PickingMedkit;
             medkitPosition = pickable.transform.position;

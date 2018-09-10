@@ -26,6 +26,7 @@ namespace Playmode.Ennemy.Strategies
 
         public override void Act()
         {
+            //BEN_REVIEW : State machine simple, mais efficace. Ça aide beaucoup la lecture du code. Bien!
             switch (state)
             {
                 case State.Seeking:
@@ -86,6 +87,13 @@ namespace Playmode.Ennemy.Strategies
         {
             if (EnnemySensor.GetFirstEnnemy != null)
             {
+                //BEN_CORRECTION : Je suis certain d'avoir vu quelque chose de similaire dans "Normal.cs".
+                //
+                //                 Vous auriez pu extraire cela dans une méthode "protected" peut-être ? Peut-être pas en totalité,
+                //                 mais la partie "movement" aurait pu certainement l'être.
+                //
+                //                 EX 1 : protected void MoveTowards(Vector3 position)
+                //                 EX 2 : protected void MoveTowards(Vector3 position, float stopDistance)
                 Vector3 position = EnnemySensor.GetFirstEnnemy.transform.position;
                 Mover.RotateTowards(position);
                 if (Vector3.Distance(position, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)

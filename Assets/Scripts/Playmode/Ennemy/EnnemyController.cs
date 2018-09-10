@@ -32,6 +32,7 @@ namespace Playmode.Ennemy
         private HandController handController;
         private IEnnemyStrategy strategy;
 
+        //BEN_CORRECTION : Code mort, inutilisé.
         public bool IsLowLife { get; private set; }
 
         private void Awake()
@@ -158,6 +159,7 @@ namespace Playmode.Ennemy
             }
         }
 
+        //BEN_REVIEW : healPoints ? Typo ?
         public void Heal(int hitpoints)
         {
             health.Heal(hitpoints);

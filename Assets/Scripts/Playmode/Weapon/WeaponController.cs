@@ -9,7 +9,7 @@ namespace Playmode.Weapon
 
 
         [Header("Behaviour")] [SerializeField] private GameObject bulletPrefab;
-        [Header("Global stats")] [SerializeField] protected float FireDelayInSeconds = 0.5f;
+        [Header("Global stats")] [SerializeField] protected float FireDelayInSeconds = 0.5f; //BEN_REVIEW : J'aurais pas mis de majuscule ici.
         [SerializeField] private int damage = 10;
         [Header("Uzi stats")] [SerializeField] private int uziDefaultDamage = 10;
         [SerializeField] private float uziDefaultFireRate = 0.15f;
@@ -91,6 +91,10 @@ namespace Playmode.Weapon
             }
         }
 
+        //BEN_REVIEW : Je trouve le nom de cette méthode "misleading" (à défaut de trouver le terme français). Pourquoi ? Parce que cela ne fait pas juste changer le type
+        //             d'arme : cela augmente aussi le nombre de points de dégats.
+        //
+        //             J'ai pas de proposition de nom à vous faire, donc j'ai pas pénalisé.
         public void SetWeaponType(WeaponType type)
         {        
           if (weaponType == WeaponType.Default)

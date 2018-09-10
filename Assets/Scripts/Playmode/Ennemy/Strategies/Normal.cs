@@ -8,6 +8,8 @@ namespace Playmode.Ennemy.Strategies
 {
     public class NormalStrategy : BaseStrategy
     {
+        //BEN_REVIEW : SVP, classez vos éléments dans un ordre logique. La norme, c'est : constantes, serialized fields,
+        //             attributs, propriétés, constructeurs, méthodes.
         private bool isEnnemySeen;
         private const int CLOSEST_DISTANCE_ALLOWED = 3;
 
@@ -30,6 +32,8 @@ namespace Playmode.Ennemy.Strategies
             {
                 Vector3 position = EnnemySensor.GetFirstEnnemy.transform.position;
                 Mover.RotateTowards(position);
+                //BEN_REVIEW : Une chose que j'aime bien faire, c'est extraire ces conditions dans des fonctions quand c'est
+                //             trop long à lire.
                 if(Vector3.Distance(position, Mover.transform.position) > CLOSEST_DISTANCE_ALLOWED)
                 {
                     Mover.Move(Mover.Foward);

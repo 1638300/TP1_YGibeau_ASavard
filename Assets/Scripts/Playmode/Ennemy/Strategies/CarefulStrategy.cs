@@ -7,6 +7,8 @@ using Playmode.Movement;
 using Playmode.Pickables;
 using UnityEngine;
 
+//BEN_CORRECTION : Où est votre namespace ?
+
 public class CarefulStrategy : BaseStrategy
 {
     private const int CLOSEST_DISTANCE_ALLOWED = 8;
@@ -77,6 +79,7 @@ public class CarefulStrategy : BaseStrategy
 
     protected override void OnPickableUnsensed(PickableController pickable)
     {
+        //BEN_REVIEW : Mot clé "base" facultatif ici.
         if (base.PickableSensor.GetFirstMedkit == null && !health.IsLowLife)
         {
             if (base.EnnemySensor.GetFirstEnnemy == null)
@@ -97,6 +100,7 @@ public class CarefulStrategy : BaseStrategy
     {
         if(!health.IsLowLife)
         {
+            //BEN_CORRECTION : Et vous ne le désactivez pas nulle part ? Erreur de logique.
             base.Mover.ExtremeSpeedActivated();
             state = State.Seeking;
         }

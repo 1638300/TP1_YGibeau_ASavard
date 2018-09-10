@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Playmode.Pickables.Types
 {
+    //BEN_CORRECTION : Le nom du fichier est pas le même que le nom de l'enum....
+    //BEN_REVIEW : C'est le seul fichier dans ce dossier. Est-ce vraiment nécessaire ?
     public enum PickableTypes
     {
         Weapon = 0x0000001,

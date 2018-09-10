@@ -12,7 +12,7 @@ namespace Playmode.Ennemy.Strategies
         protected readonly HandController HandController;
         protected EnnemySensor EnnemySensor;
         protected PickableSensor PickableSensor;
-        protected bool IsWorldColliding;
+        protected bool IsWorldColliding; //BEN_REVIEW : Je sais que Rider vous dit de mettre une majuscule à ce qui est protected, mais de mon coté, je vous le déconseille. Pas péanlisé.
 
         private WorldSensor frontWorldSensor;
         private WorldSensor backWorldSensor;

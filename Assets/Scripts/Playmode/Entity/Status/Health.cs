@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Playmode.Entity.Status
 {
     public delegate void HealthEventHandler(EnnemyController ennemy);
-    public delegate void LowLifeEventHandler();
+    public delegate void LowLifeEventHandler(); //BEN_CORRECTION : Utilisé pas juste pour LowLife. Pourquoi pas HealthChangedEventHandler ?
 
     public class Health : MonoBehaviour
     {

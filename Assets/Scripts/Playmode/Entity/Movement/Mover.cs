@@ -5,14 +5,16 @@ namespace Playmode.Movement
 {
     public abstract class Mover : MonoBehaviour
     {
+        //BEN_CORRECTION : Trois constantes, deux sortes de nommage différentes.
         public static readonly Vector3 Foward = Vector3.up;
         public static readonly Vector3 Backward = Vector3.down;
         public const float CLOCKWISE = 1f;
         
+        //BEN_CORERCTION : Gros problèmes de lisibilités ici.
         [SerializeField] protected float Speed = 1f;
         [SerializeField] protected float RotateSpeed = 90f;
         private float extremeSpeed;
-        public void ExtremeSpeedActivated()
+        public void ExtremeSpeedActivated() //BEN_CORRECTION : Nommage de la fonction. Devrait contenir un verbe.
         {
             Speed = extremeSpeed;
         }
